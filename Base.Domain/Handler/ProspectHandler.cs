@@ -1,38 +1,41 @@
-﻿namespace Base.Domain.Handler
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Base.Domain.CommandHandlers;
+using Base.Domain.Commands.Prospect;
+using Base.Domain.Interface;
+using Base.Shared.Domain.Bus;
+using Base.Shared.Domain.Notification;
+using MediatR;
+
+namespace Base.Domain.Handler
 {
-    public class ProspectHandler { }
-    //    : 
-    //    IHandler<CreateProspectCommand>,
-    //    IHandler<EditProspectCommand>
-    //{
-    //    IProspectRepository prospectRepository;
+    public class ProspectHandler : CommandHandler, INotificationHandler<CreateProspectCommand>
+    {
+        IProspectRepository prospectRepository;
 
-    //    public ProspectHandler(
-    //        IProspectRepository _prospectRepository)
-    //    {
-    //        prospectRepository = _prospectRepository;
-    //    }
+        public ProspectHandler(
+            IProspectRepository _prospectRepository,
+                IUnitOfWork uow,
+                IMediatorHandler bus,
+                INotificationHandler<DomainNotification> notifications)
+                : base(uow, bus, notifications)
+        {
+            prospectRepository = _prospectRepository;
+        }
 
-    //    public ICommandResult Handle(CreateProspectCommand command)
-    //    {
-    //        command.FillEntities();
-    //        if (command.Invalid)
-    //            return new CommanResult(false, command.Error());
+        public Task Handle(CreateProspectCommand command, CancellationToken cancellationToken)
+        {
+            command.FillEntities();
 
-    //        prospectRepository.Add(command.Prospect);
+            if (command.Invalid)
+            {
+                NotifyValidationErrors(command);
+                return Task.CompletedTask;
+            }
 
-    //        return new CommanResult(true, "Informações de usuário inseridas com sucesso.");
-    //    }
+            var prospect = prospectRepository.Add(command.Prospect);
 
-    //    public ICommandResult Handle(EditProspectCommand command)
-    //    {
-    //        command.FillEntities();
-    //        if (command.Invalid)
-    //            return new CommanResult(false, command.Error());
-                        
-    //        prospectRepository.Update(command.Prospect);
-
-    //        return new CommanResult(true, "Informações de usuário alteradas com sucesso.");
-    //    }
-    //}
+            return Task.CompletedTask;
+        }
+    }
 }

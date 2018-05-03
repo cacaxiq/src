@@ -7,9 +7,9 @@ namespace Base.Domain.Commands.Prospect
         public string Address { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
-        public string CellPhone { get; set; }
-        public bool IsWhatsApp { get; set; }
-        public string HomePhone { get; set; }
+        public string CellPhone { get; private set; }
+        public bool IsWhatsApp { get; private set; }
+        public string HomePhone { get; private set; }
 
         public Entities.Prospect Prospect { get; set; }
 
@@ -30,6 +30,8 @@ namespace Base.Domain.Commands.Prospect
             {
                 var homePhone = new HomePhone(HomePhone);
                 Prospect.AddHomePhone(homePhone);
+
+                AddNotifications(name, email, Prospect);
             }
         }
     }
