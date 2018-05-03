@@ -1,9 +1,5 @@
 ﻿using Base.ExternalData.Repository.EventSourcing;
 using Base.Shared.Domain.Event;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Base.ExternalData.EventSourcing
 {
@@ -24,14 +20,14 @@ namespace Base.ExternalData.EventSourcing
 
         public void Save<T>(T theEvent) where T : Event
         {
-            var serializedData = JsonConvert.SerializeObject(theEvent);
+            //var serializedData = JsonConvert.SerializeObject(theEvent);
 
-            var storedEvent = new StoredEvent(
-                theEvent,
-                serializedData,
-                "User");
+            //var storedEvent = new StoredEvent(
+            //    theEvent,
+            //    serializedData,
+            //    "User");
 
-            _eventStoreRepository.Store(storedEvent);
+            //_eventStoreRepository.Store(storedEvent);
         }
     }
 }

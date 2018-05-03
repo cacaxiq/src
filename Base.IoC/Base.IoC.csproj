@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Desktop\Pós Graduação\Princípios de Arquitetura de Software\EquinoxProject-master\EquinoxProject-master\src\Equinox.Application\Base.Application.csproj" />
+    <ProjectReference Include="..\Base.Application\Base.Application.csproj" />
     <ProjectReference Include="..\Base.Bus\Base.Bus.csproj" />
-    <ProjectReference Include="..\Base.DataCore\Base.ExternalData.csproj" />
+    <ProjectReference Include="..\Base.ExternalData\Base.ExternalData.csproj" />
   </ItemGroup>
 
 </Project>
