@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="MediatR" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Desktop\Pós Graduação\Princípios de Arquitetura de Software\EquinoxProject-master\EquinoxProject-master\src\Equinox.Application\Base.Application.csproj" />
+    <ProjectReference Include="..\Base.Bus\Base.Bus.csproj" />
+    <ProjectReference Include="..\Base.DataCore\Base.ExternalData.csproj" />
+  </ItemGroup>
+
+</Project>

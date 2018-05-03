@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Flunt" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ValueObjects\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Base.Shared.Domain\Base.Shared.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
