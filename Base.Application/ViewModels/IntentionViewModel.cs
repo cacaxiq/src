@@ -27,7 +27,7 @@ namespace Base.Application.ViewModels
         //[DisplayName("Birth Date")]
         //public DateTime BirthDate { get; set; }
 
- 
+        
         public decimal? Rent { get; set; }
         public Guid ProspectId { get; set; }
         public decimal LowestPrice { get; set; }

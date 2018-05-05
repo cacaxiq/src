@@ -12,6 +12,7 @@ namespace Base.Shared.Domain.Interface
         int Count();
         Task<int> CountAsync();
         void Delete(TEntity entity);
+        void Delete(object key);
         TEntity Find(Expression<Func<TEntity, bool>> match);
         ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> match);
         Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> match);
@@ -25,7 +26,7 @@ namespace Base.Shared.Domain.Interface
         Task<TEntity> GetAsync(Guid id);
         void Save();
         Task<int> SaveAsync();
-        TEntity Update(TEntity t, object key);
+        void Update(TEntity t);
         Task<TEntity> UpdateAsyn(TEntity t, object key);
     }
 }

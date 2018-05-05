@@ -2,16 +2,16 @@
 using Base.Shared.Domain.ValueObjects;
 namespace Base.Domain.Commands.Prospect
 {
-    public class ProspectCommand : Command
+    public abstract class ProspectCommand : Command
     {
-        public string Address { get; private set; }
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-        public string CellPhone { get; private set; }
-        public bool IsWhatsApp { get; private set; }
-        public string HomePhone { get; private set; }
+        public string Address { get; protected set; }
+        public string FirstName { get; protected set; }
+        public string LastName { get; protected set; }
+        public string CellPhone { get; protected set; }
+        public bool IsWhatsApp { get; protected set; }
+        public string HomePhone { get; protected set; }
 
-        public Entities.Prospect Prospect { get; set; }
+        public Entities.Prospect Prospect { get; private set; }
 
         public override void FillEntities()
         {
@@ -30,9 +30,9 @@ namespace Base.Domain.Commands.Prospect
             {
                 var homePhone = new HomePhone(HomePhone);
                 Prospect.AddHomePhone(homePhone);
-
-                AddNotifications(name, email, Prospect);
             }
+
+            AddNotifications(name, email, Prospect);
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using Flunt.Notifications;
+﻿using Base.Shared.Domain.Event;
 using System.Linq;
 
 namespace Base.Shared.Domain.Command
 {
-    public class Command : Notifiable, ICommand
+    public abstract class Command : Message, ICommand
     {
         public virtual void FillEntities() { }
 

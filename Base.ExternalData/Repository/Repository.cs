@@ -67,21 +67,21 @@ namespace Base.ExternalData.Repository
             return await _context.Set<TEntity>().Where(match).ToListAsync();
         }
 
+        public virtual void Delete(object key)
+        {
+            var entry = _context.Set<TEntity>().Find(key);
+
+            _context.Set<TEntity>().Remove(entry);
+        }
+
         public virtual void Delete(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
         }
 
-        public virtual TEntity Update(TEntity t, object key)
+        public void Update(TEntity t)
         {
-            if (t == null)
-                return null;
-            TEntity exist = _context.Set<TEntity>().Find(key);
-            if (exist != null)
-            {
-                _context.Entry(exist).CurrentValues.SetValues(t);
-            }
-            return exist;
+            _context.Set<TEntity>().Update(t);
         }
 
         public virtual async Task<TEntity> UpdateAsyn(TEntity t, object key)

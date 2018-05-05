@@ -12,10 +12,11 @@ using Base.ExternalData.UoW;
 using Base.Shared.Domain.Bus;
 using Base.Bus;
 using Base.Domain.Commands;
-using Base.Domain.Handler;
 using Base.ExternalData.Repository.EventSourcing;
 using Base.Shared.Domain.Event;
 using Base.ExternalData.EventSourcing;
+using Base.Domain.CommandHandlers;
+using Base.Domain.Commands.Prospect;
 
 namespace Base.IoC
 {
@@ -30,12 +31,18 @@ namespace Base.IoC
             services.AddSingleton<IConfigurationProvider>(AutoMapperConfig.RegisterMappings());
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<IConfigurationProvider>(), sp.GetService));
             services.AddScoped<IIntentionAppService, IntentionAppService>();
+            services.AddScoped<IProspectAppService, ProspectAppService>();
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
             // Domain - Commands
             services.AddScoped<INotificationHandler<CreateIntentionCommand>, IntentionHandler>();
+            services.AddScoped<INotificationHandler<UpdateIntentionCommand>, IntentionHandler>();
+            services.AddScoped<INotificationHandler<RemoveIntentionCommand>, IntentionHandler>();
+            services.AddScoped<INotificationHandler<CreateProspectCommand>, ProspectHandler>();
+            services.AddScoped<INotificationHandler<UpdateProspectCommand>, ProspectHandler>();
+            services.AddScoped<INotificationHandler<RemoveProspectCommand>, ProspectHandler>();
 
             // ExternalData
             services.AddScoped<IIntentionRepository, IntentionRepository>();

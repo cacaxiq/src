@@ -39,7 +39,7 @@ namespace Base.ExternalData.Configuration
 
             var navigation = builder.Metadata.FindNavigation(nameof(Prospect.Intentions));
             navigation.SetPropertyAccessMode(PropertyAccessMode.Property);
-            builder.HasMany(g => g.Intentions).WithOne(s => s.Prospect).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(g => g.Intentions).WithOne(s => s.Prospect).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

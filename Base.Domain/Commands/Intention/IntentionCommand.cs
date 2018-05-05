@@ -1,14 +1,12 @@
-﻿using AutoMapper;
-using Base.Domain.Enums;
+﻿using Base.Domain.Enums;
 using Base.Domain.ValueObjects;
 using Base.Shared.Domain.Command;
 using Base.Shared.Enum;
-using MediatR;
 using System;
 
 namespace Base.Domain.Commands.Intention
 {
-    public class IntentionCommand : Command, IRequest<ICommandResult>
+    public abstract class IntentionCommand : Command
     {
         public Guid ProspectId { get; protected set; }
         public decimal? Rent { get; protected set; }

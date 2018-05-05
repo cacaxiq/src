@@ -18,7 +18,7 @@ namespace Base.Domain.Entities
             _intentions = new List<Intention>();
         }
 
-        protected Prospect() { }
+        protected Prospect() { _intentions = new List<Intention>(); }
 
         public IReadOnlyCollection<Intention> Intentions => _intentions.ToArray();
 

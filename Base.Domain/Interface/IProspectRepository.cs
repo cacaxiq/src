@@ -5,5 +5,6 @@ namespace Base.Domain.Interface
 {
     public interface IProspectRepository : IRepository<Prospect>
     {
+        bool ExistProspectWithEmail(string email);
     }
 }

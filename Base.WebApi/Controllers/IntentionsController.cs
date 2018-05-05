@@ -25,13 +25,6 @@ namespace Base.WebApi.Controllers
             this.intentionAppService = intentionAppService;
         }
 
-        //[HttpPost]
-        //public IActionResult CreateIntention([FromBody]IntentionViewModel model)
-        //{
-        //    intentionAppService.Create(model);
-        //    return Ok();
-        //}
-
         [HttpPost]
         public IActionResult Post([FromBody]IntentionViewModel model)
         {
