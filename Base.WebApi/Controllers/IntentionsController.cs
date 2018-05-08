@@ -25,6 +25,12 @@ namespace Base.WebApi.Controllers
             this.intentionAppService = intentionAppService;
         }
 
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Response(intentionAppService.GetAll());
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody]IntentionViewModel model)
         {
@@ -37,6 +43,27 @@ namespace Base.WebApi.Controllers
             intentionAppService.Create(model);
 
             return Response(model);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody]IntentionViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                NotifyModelStateErrors();
+                return Response(model);
+            }
+
+            intentionAppService.Update(model);
+
+            return Response(model);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(Guid id)
+        {
+            intentionAppService.Remove(id);
+            return Response(id);
         }
     }
 }

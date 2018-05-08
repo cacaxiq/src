@@ -5,6 +5,11 @@ namespace Base.Domain.Commands.Prospect
 {
     public class RemoveProspectCommand : Command
     {
-        public Guid ProspectId { get; set; }
+        public RemoveProspectCommand(Guid prospectId)
+        {
+            ProspectId = prospectId;
+        }
+
+        public Guid ProspectId { get; private set; }
     }
 }

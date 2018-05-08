@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using Base.Shared.Domain.ValueObjects;
-using Base.Shared.Enum;
+﻿using Base.Shared.Domain.ValueObjects;
 using Flunt.Validations;
+using System.Collections.Generic;
 
 namespace Base.Domain.ValueObjects
 {
-    public class Place :  ValueObject
+    public class Place : ValueObject
     {
-        public Place(EState state, string city, string neighborhood)
+        private Place() { }
+        public Place(string state, string city, string neighborhood)
         {
             State = state;
             City = city;
@@ -16,10 +16,12 @@ namespace Base.Domain.ValueObjects
             AddNotifications(new Contract()
             .Requires()
             .IsNotNullOrEmpty(City, "Place.City", "Cidade deve ser preenchido.")
-            .IsNotNullOrEmpty(Neighborhood, "Place.Neighborhood", "Bairro deve ser preenchido."));
+            .IsNotNullOrEmpty(Neighborhood, "Place.Neighborhood", "Bairro deve ser preenchido.")
+            .HasMaxLen(City, 50, "Place.City", "Cidade excedeu o tamanho máximo.")
+            .HasMaxLen(Neighborhood, 50, "Place.Neighborhood", "Bairro  excedeu o tamanho máximo."));
         }
 
-        public EState State { get; private set; }
+        public string State { get; private set; }
         public string City { get; private set; }
         public string Neighborhood { get; private set; }
 
@@ -28,7 +30,6 @@ namespace Base.Domain.ValueObjects
             yield return State;
             yield return City;
             yield return Neighborhood;
-
         }
     }
 }

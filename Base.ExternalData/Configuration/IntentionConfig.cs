@@ -16,20 +16,29 @@ namespace Base.ExternalData.Configuration
 
             builder.Property(c => c.Id);
             builder.HasKey(c => c.Id);
-            builder.Property(c => c.Rent).HasColumnType("decimal(5, 2)"); ;
-            builder.OwnsOne(p => p.PriceRange)
-                .Ignore(c => c.Notifications)
-                .Ignore(c => c.Valid)
-                .Ignore(c => c.Invalid);
-
+            builder.Property(c => c.Rent).HasColumnType("decimal(10, 2)");
             builder.Property(c => c.Bedroom);
-            builder.OwnsOne(p => p.Place)
-                .Ignore(c => c.Notifications)
-                .Ignore(c => c.Valid)
-                .Ignore(c => c.Invalid);
+            builder.Property(c => c.PropertyType);
+            builder.Property(c => c.PropertySituation);
 
-            builder.Property(c => c.PropertyType).IsRequired();
-            builder.Property(c => c.PropertySituation).IsRequired();
+            builder.Property(p => p.LowestPrice)
+                 .HasColumnName("LowestPrice")
+                 .HasColumnType("decimal(10, 2)");
+
+            builder.Property(p => p.MaximumPrice)
+                   .HasColumnName("MaximumPrice")
+                   .HasColumnType("decimal(10, 2)"); ;
+
+            builder.Property(p => p.State)
+                 .HasColumnName("State");
+
+            builder.Property(p => p.City)
+                 .HasColumnName("City")
+                 .HasMaxLength(50);
+
+            builder.Property(p => p.Neighborhood)
+                 .HasColumnName("Neighborhood")
+                 .HasMaxLength(50);
         }
     }
 }

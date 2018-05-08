@@ -2,7 +2,7 @@
 using Base.Shared.Domain.ValueObjects;
 using Flunt.Validations;
 
-namespace Base.Domain.ValueObjects
+namespace Base.Shared.Domain.ValueObjects
 {
     public class PriceRange : ValueObject
     {

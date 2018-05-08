@@ -3,107 +3,108 @@ using Base.Shared.Domain.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Base.ExternalData.Extensions;
 
 namespace Base.ExternalData.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected BaseContext _context;
+        protected readonly BaseContext Db;
+        protected readonly DbSet<TEntity> DbSet;
 
         public Repository(BaseContext context)
         {
-            _context = context;
+            Db = context;
+            DbSet = Db.Set<TEntity>();
         }
 
         public IQueryable<TEntity> GetAll()
         {
-            return _context.Set<TEntity>();
+            return DbSet;
         }
 
         public virtual async Task<ICollection<TEntity>> GetAllAsyn()
         {
 
-            return await _context.Set<TEntity>().ToListAsync();
+            return await DbSet.ToListAsync();
         }
 
         public virtual TEntity Get(Guid id)
         {
-            return _context.Set<TEntity>().Find(id);
+            return DbSet.Find(id);
         }
 
         public virtual async Task<TEntity> GetAsync(Guid id)
         {
-            return await _context.Set<TEntity>().FindAsync(id);
+            return await DbSet.FindAsync(id);
         }
 
-        public virtual TEntity Add(TEntity t)
+        public virtual void Add(TEntity t)
         {
-
-            _context.Set<TEntity>().Add(t);
-
-            return t;
+            DbSet.Add(t);
         }
 
         public virtual TEntity Find(Expression<Func<TEntity, bool>> match)
         {
-            return _context.Set<TEntity>().SingleOrDefault(match);
+            return DbSet.SingleOrDefault(match);
         }
 
         public virtual async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> match)
         {
-            return await _context.Set<TEntity>().SingleOrDefaultAsync(match);
+            return await DbSet.SingleOrDefaultAsync(match);
         }
 
         public ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> match)
         {
-            return _context.Set<TEntity>().Where(match).ToList();
+            return DbSet.Where(match).ToList();
         }
 
         public async Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> match)
         {
-            return await _context.Set<TEntity>().Where(match).ToListAsync();
+            return await DbSet.Where(match).ToListAsync();
         }
 
         public virtual void Delete(object key)
         {
-            var entry = _context.Set<TEntity>().Find(key);
+            var entry = DbSet.Find(key);
 
-            _context.Set<TEntity>().Remove(entry);
+            DbSet.Remove(entry);
         }
 
         public virtual void Delete(TEntity entity)
         {
-            _context.Set<TEntity>().Remove(entity);
+            DbSet.Remove(entity);
         }
 
         public void Update(TEntity t)
         {
-            _context.Set<TEntity>().Update(t);
+            DbSet.Update(t);
         }
 
         public virtual async Task<TEntity> UpdateAsyn(TEntity t, object key)
         {
             if (t == null)
                 return null;
-            TEntity exist = await _context.Set<TEntity>().FindAsync(key);
+            TEntity exist = await DbSet.FindAsync(key);
             if (exist != null)
             {
-                _context.Entry(exist).CurrentValues.SetValues(t);
+                Db.Entry(exist).CurrentValues.SetValues(t);
             }
             return exist;
         }
 
         public int Count()
         {
-            return _context.Set<TEntity>().Count();
+            return DbSet.Count();
         }
 
         public async Task<int> CountAsync()
         {
-            return await _context.Set<TEntity>().CountAsync();
+            return await DbSet.CountAsync();
         }
 
         public virtual void Save()
@@ -114,18 +115,18 @@ namespace Base.ExternalData.Repository
 
         public async virtual Task<int> SaveAsync()
         {
-            return await _context.SaveChangesAsync();
+            return await Db.SaveChangesAsync();
         }
 
         public virtual IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
         {
-            IQueryable<TEntity> query = _context.Set<TEntity>().Where(predicate);
+            IQueryable<TEntity> query = DbSet.Where(predicate);
             return query;
         }
 
         public virtual async Task<ICollection<TEntity>> FindByAsyn(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _context.Set<TEntity>().Where(predicate).ToListAsync();
+            return await DbSet.Where(predicate).ToListAsync();
         }
 
         public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
@@ -148,7 +149,7 @@ namespace Base.ExternalData.Repository
             {
                 if (disposing)
                 {
-                    _context.Dispose();
+                    Db.Dispose();
                 }
                 this.disposed = true;
             }

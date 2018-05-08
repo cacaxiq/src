@@ -1,101 +1,64 @@
 ﻿using Base.Domain.Enums;
 using Base.Domain.ValueObjects;
 using Base.Shared.Domain.Entities;
+using Base.Shared.Domain.ValueObjects;
 using Base.Shared.Enum;
 using Flunt.Validations;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Base.Domain.Entities
 {
     public class Intention : Entity
     {
         public Intention(
-            Prospect prospect,
-            decimal rent,
-            PriceRange priceRange,
-            int bedroom,
-            Place place,
+            decimal lowestPrice, 
+            decimal maximumPrice,
+            int bedroom, 
+            EState state, 
+            string city, 
+            string neighborhood,
             EPropertyType propertyType,
             EPropertySituation propertySituation)
         {
-            Prospect = prospect;
-            Rent = rent;
-            PriceRange = priceRange;
+            LowestPrice = lowestPrice;
+            MaximumPrice = maximumPrice;
             Bedroom = bedroom;
-            Place = place;
+            State = state;
+            City = city;
+            Neighborhood = neighborhood;
             PropertyType = propertyType;
             PropertySituation = propertySituation;
 
-            AddNotifications(prospect, place, priceRange);
-        }
-
-        public Intention(
-            Prospect prospect,
-            PriceRange priceRange,
-            int bedroom,
-            Place place,
-            EPropertyType propertyType,
-            EPropertySituation propertySituation)
-        {
-            Prospect = prospect;
-            PriceRange = priceRange;
-            Bedroom = bedroom;
-            Place = place;
-            PropertyType = propertyType;
-            PropertySituation = propertySituation;
-
-            AddNotifications(prospect, place, priceRange);
-        }
-
-        public Intention(
-            decimal rent,
-            PriceRange priceRange,
-            int bedroom,
-            Place place,
-            EPropertyType propertyType,
-            EPropertySituation propertySituation)
-        {
-            Rent = rent;
-            PriceRange = priceRange;
-            Bedroom = bedroom;
-            Place = place;
-            PropertyType = propertyType;
-            PropertySituation = propertySituation;
-
-            AddNotifications(place, priceRange);
-        }
-
-        public Intention(
-            PriceRange priceRange,
-            int bedroom,
-            Place place,
-            EPropertyType propertyType,
-            EPropertySituation propertySituation)
-        {
-            PriceRange = priceRange;
-            Bedroom = bedroom;
-            Place = place;
-            PropertyType = propertyType;
-            PropertySituation = propertySituation;
-
-            AddNotifications(place, priceRange);
+            AddNotifications(new Contract()
+            .Requires()
+            .IsNotNullOrEmpty(City, "Intention.City", "Cidade deve ser preenchido.")
+            .HasMaxLen(City, 50, "Intention.City", "Cidade excedeu o tamanho máximo.")
+            .IsNotNullOrEmpty(Neighborhood, "Intention.Neighborhood", "Bairro deve ser preenchido.")
+            .HasMaxLen(Neighborhood, 50, "Intention.Neighborhood", "Bairro  excedeu o tamanho máximo.")
+            .IsGreaterThan(MaximumPrice, LowestPrice, "Intention.LowestPrice", "Preço minímo não pode ser maior que preço máximo."));
         }
 
         protected Intention() { }
 
-        public Prospect Prospect { get; private set; }
+        public Guid ProspectId { get; private set; }
         public decimal? Rent { get; private set; }
-        public PriceRange PriceRange { get; private set; }
+        public decimal LowestPrice { get; private set; }
+        public decimal MaximumPrice { get; private set; }
         public int Bedroom { get; private set; }
-        public Place Place { get; private set; }
+        public EState State { get; private set; }
+        public string City { get; private set; }
+        public string Neighborhood { get; private set; }
         public EPropertyType PropertyType { get; private set; }
         public EPropertySituation PropertySituation { get; private set; }
 
-        public void AddProspect(Prospect prospect)
+        public void AddProspect(Guid prospect)
         {
-            Prospect = prospect;
+            ProspectId = prospect;
+        }
+
+        public void AddRent(decimal rent)
+        {
+            Rent = rent;
         }
     }
 }

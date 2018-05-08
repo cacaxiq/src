@@ -15,7 +15,17 @@ namespace Base.ExternalData.UoW
 
         public CommandResponse Commit()
         {
-            var rowsAffected = _context.SaveChanges();
+            var rowsAffected = int.MinValue;
+
+            try
+            {
+                rowsAffected = _context.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+                rowsAffected = 0;
+            }
+            
             return new CommandResponse(rowsAffected > 0);
         }
 

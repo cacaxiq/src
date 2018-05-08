@@ -53,6 +53,12 @@ namespace Base.Application.Services
             _bus.SendCommand(updateCommand);
         }
 
+        public void Remove(Guid id)
+        {
+            var removeCommand = new RemoveProspectCommand(id);
+            _bus.SendCommand(removeCommand);
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

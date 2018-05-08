@@ -42,17 +42,9 @@ namespace Base.Domain.CommandHandlers
                 return Task.CompletedTask;
             }
 
-            var prospect = prospectRepository.Get(notification.ProspectId);
+            notification.Intention.AddProspect(notification.ProspectId);
 
-            if (prospect == null)
-            {
-                Bus.RaiseEvent(new DomainNotification(notification.MessageType, "Usuário não existe."));
-                return Task.CompletedTask;
-            }
-
-            notification.Intention.AddProspect(prospect);
-
-            var result = intentionRepository.Add(notification.Intention);
+            intentionRepository.Add(notification.Intention);
 
             if (Commit())
             {

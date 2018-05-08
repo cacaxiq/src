@@ -37,7 +37,6 @@ namespace Base.Domain.Commands
         {
             base.FillEntities();
 
-            Intention.Prospect.UpdateEntity(ProspectId);
             Intention.UpdateEntity(IntenttionId);
         }
     }

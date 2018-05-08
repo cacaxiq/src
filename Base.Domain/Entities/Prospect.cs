@@ -20,7 +20,7 @@ namespace Base.Domain.Entities
 
         protected Prospect() { _intentions = new List<Intention>(); }
 
-        public IReadOnlyCollection<Intention> Intentions => _intentions.ToArray();
+        public IReadOnlyCollection<Intention> Intentions => _intentions.ToList();
 
         public void AddIntention(Intention intention)
         {

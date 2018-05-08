@@ -16,17 +16,19 @@ namespace Base.Application.Services
         private readonly IMapper _mapper;
         private readonly IIntentionRepository _intentionRepository;
         private readonly IMediatorHandler _bus;
+        private readonly IConfigurationProvider _mapperConfigurationProvider;
 
-        public IntentionAppService(IMapper mapper, IIntentionRepository intentionRepository, IMediatorHandler bus)
+        public IntentionAppService(IMapper mapper, IIntentionRepository intentionRepository, IMediatorHandler bus, IConfigurationProvider mapperConfigurationProvider)
         {
             _mapper = mapper;
             _intentionRepository = intentionRepository;
             _bus = bus;
+            _mapperConfigurationProvider = mapperConfigurationProvider;
         }
 
         public IEnumerable<IntentionViewModel> GetAll()
         {
-            return _intentionRepository.GetAll().ProjectTo<IntentionViewModel>();
+            return _intentionRepository.GetAll().ProjectTo<IntentionViewModel>(_mapperConfigurationProvider);
         }
 
         public IntentionViewModel GetById(Guid id)
@@ -34,23 +36,23 @@ namespace Base.Application.Services
             return _mapper.Map<IntentionViewModel>(_intentionRepository.Get(id));
         }
 
-        public void Create(IntentionViewModel intentionViewModel)
+        public void Create(IntentionViewModel viewModel)
         {
-            var command = _mapper.Map<CreateIntentionCommand>(intentionViewModel);
+            var command = _mapper.Map<CreateIntentionCommand>(viewModel);
             _bus.SendCommand(command);
         }
 
-        //public void Update(IntentionViewModel customerViewModel)
-        //{
-        //    var updateCommand = _mapper.Map<UpdateCustomerCommand>(customerViewModel);
-        //    Bus.SendCommand(updateCommand);
-        //}
+        public void Update(IntentionViewModel viewModel)
+        {
+            var updateCommand = _mapper.Map<UpdateIntentionCommand>(viewModel);
+            _bus.SendCommand(updateCommand);
+        }
 
-        //public void Remove(Guid id)
-        //{
-        //    var removeCommand = new RemoveCustomerCommand(id);
-        //    Bus.SendCommand(removeCommand);
-        //}
+        public void Remove(Guid id)
+        {
+            var removeCommand = new RemoveIntentionCommand(id);
+            _bus.SendCommand(removeCommand);
+        }
 
         public void Dispose()
         {

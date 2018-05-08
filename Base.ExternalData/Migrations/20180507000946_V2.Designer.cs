@@ -13,9 +13,10 @@ using System;
 namespace Base.ExternalData.Migrations
 {
     [DbContext(typeof(BaseContext))]
-    partial class BaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180507000946_V2")]
+    partial class V2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,33 +30,14 @@ namespace Base.ExternalData.Migrations
 
                     b.Property<int>("Bedroom");
 
-                    b.Property<string>("City")
-                        .HasColumnName("City")
-                        .HasMaxLength(50);
-
-                    b.Property<decimal>("LowestPrice")
-                        .HasColumnName("LowestPrice")
-                        .HasColumnType("decimal(10, 2)");
-
-                    b.Property<decimal>("MaximumPrice")
-                        .HasColumnName("MaximumPrice")
-                        .HasColumnType("decimal(10, 2)");
-
-                    b.Property<string>("Neighborhood")
-                        .HasColumnName("Neighborhood")
-                        .HasMaxLength(50);
-
                     b.Property<int>("PropertySituation");
 
                     b.Property<int>("PropertyType");
 
-                    b.Property<Guid>("ProspectId");
+                    b.Property<Guid?>("ProspectId");
 
                     b.Property<decimal?>("Rent")
-                        .HasColumnType("decimal(10, 2)");
-
-                    b.Property<int>("State")
-                        .HasColumnName("State");
+                        .HasColumnType("decimal(5, 2)");
 
                     b.HasKey("Id");
 
@@ -76,10 +58,53 @@ namespace Base.ExternalData.Migrations
 
             modelBuilder.Entity("Base.Domain.Entities.Intention", b =>
                 {
-                    b.HasOne("Base.Domain.Entities.Prospect")
+                    b.HasOne("Base.Domain.Entities.Prospect", "Prospect")
                         .WithMany("Intentions")
                         .HasForeignKey("ProspectId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.OwnsOne("Base.Domain.ValueObjects.Place", "Place", b1 =>
+                        {
+                            b1.Property<Guid>("IntentionId");
+
+                            b1.Property<string>("City")
+                                .HasColumnName("City")
+                                .HasMaxLength(50);
+
+                            b1.Property<string>("Neighborhood")
+                                .HasColumnName("Neighborhood")
+                                .HasMaxLength(50);
+
+                            b1.Property<int>("State")
+                                .HasColumnName("State");
+
+                            b1.ToTable("Intention");
+
+                            b1.HasOne("Base.Domain.Entities.Intention")
+                                .WithOne("Place")
+                                .HasForeignKey("Base.Domain.ValueObjects.Place", "IntentionId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("Base.Domain.ValueObjects.PriceRange", "PriceRange", b1 =>
+                        {
+                            b1.Property<Guid>("IntentionId");
+
+                            b1.Property<decimal>("LowestPrice")
+                                .HasColumnName("LowestPrice")
+                                .HasColumnType("decimal(6, 2)");
+
+                            b1.Property<decimal>("MaximumPrice")
+                                .HasColumnName("MaximumPrice")
+                                .HasColumnType("decimal(6, 2)");
+
+                            b1.ToTable("Intention");
+
+                            b1.HasOne("Base.Domain.Entities.Intention")
+                                .WithOne("PriceRange")
+                                .HasForeignKey("Base.Domain.ValueObjects.PriceRange", "IntentionId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
             modelBuilder.Entity("Base.Domain.Entities.Prospect", b =>

@@ -13,9 +13,10 @@ using System;
 namespace Base.ExternalData.Migrations
 {
     [DbContext(typeof(BaseContext))]
-    partial class BaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180508021336_V9")]
+    partial class V9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,7 +77,7 @@ namespace Base.ExternalData.Migrations
 
             modelBuilder.Entity("Base.Domain.Entities.Intention", b =>
                 {
-                    b.HasOne("Base.Domain.Entities.Prospect")
+                    b.HasOne("Base.Domain.Entities.Prospect", "Prospect")
                         .WithMany("Intentions")
                         .HasForeignKey("ProspectId")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -8,7 +8,7 @@ namespace Base.Shared.Domain.Interface
 {
     public interface IRepository<TEntity> : IDisposable where TEntity : class
     {
-        TEntity Add(TEntity t);
+        void Add(TEntity t);
         int Count();
         Task<int> CountAsync();
         void Delete(TEntity entity);

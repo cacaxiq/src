@@ -6,7 +6,6 @@ namespace Base.Shared.Domain.ValueObjects
     public class Name : ValueObject
     {
         private Name() { }
-
         public Name(string firstName, string lastFirstName)
         {
             FirstName = firstName;
@@ -22,7 +21,6 @@ namespace Base.Shared.Domain.ValueObjects
 
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
-
         public string FullName() { return $"{FirstName} {LastName}"; }
 
         protected override IEnumerable<object> GetAtomicValues()

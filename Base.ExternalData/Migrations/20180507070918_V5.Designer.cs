@@ -13,9 +13,10 @@ using System;
 namespace Base.ExternalData.Migrations
 {
     [DbContext(typeof(BaseContext))]
-    partial class BaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180507070918_V5")]
+    partial class V5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,11 +36,11 @@ namespace Base.ExternalData.Migrations
 
                     b.Property<decimal>("LowestPrice")
                         .HasColumnName("LowestPrice")
-                        .HasColumnType("decimal(10, 2)");
+                        .HasColumnType("decimal(8, 2)");
 
                     b.Property<decimal>("MaximumPrice")
                         .HasColumnName("MaximumPrice")
-                        .HasColumnType("decimal(10, 2)");
+                        .HasColumnType("decimal(8, 2)");
 
                     b.Property<string>("Neighborhood")
                         .HasColumnName("Neighborhood")
@@ -49,10 +50,10 @@ namespace Base.ExternalData.Migrations
 
                     b.Property<int>("PropertyType");
 
-                    b.Property<Guid>("ProspectId");
+                    b.Property<Guid?>("ProspectId");
 
                     b.Property<decimal?>("Rent")
-                        .HasColumnType("decimal(10, 2)");
+                        .HasColumnType("decimal(7, 2)");
 
                     b.Property<int>("State")
                         .HasColumnName("State");
@@ -76,7 +77,7 @@ namespace Base.ExternalData.Migrations
 
             modelBuilder.Entity("Base.Domain.Entities.Intention", b =>
                 {
-                    b.HasOne("Base.Domain.Entities.Prospect")
+                    b.HasOne("Base.Domain.Entities.Prospect", "Prospect")
                         .WithMany("Intentions")
                         .HasForeignKey("ProspectId")
                         .OnDelete(DeleteBehavior.Cascade);

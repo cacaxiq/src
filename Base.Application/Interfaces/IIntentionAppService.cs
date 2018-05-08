@@ -6,8 +6,10 @@ namespace Base.Application.Interfaces
 {
     public interface IIntentionAppService : IDisposable
     {
-        void Create(IntentionViewModel intentionViewModel);
         IEnumerable<IntentionViewModel> GetAll();
         IntentionViewModel GetById(Guid id);
+        void Create(IntentionViewModel viewModel);
+        void Update(IntentionViewModel viewModel);
+        void Remove(Guid id);
     }
 }

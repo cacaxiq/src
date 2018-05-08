@@ -58,5 +58,12 @@ namespace Base.WebApi.Controllers
 
             return Response(model);
         }
+
+        [HttpDelete]
+        public IActionResult Delete(Guid id)
+        {
+            prospectAppService.Remove(id);
+            return Response(id);
+        }
     }
 }

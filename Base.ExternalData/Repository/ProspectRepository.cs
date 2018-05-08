@@ -11,7 +11,7 @@ namespace Base.ExternalData.Repository
 
         public bool ExistProspectWithEmail(string email)
         {
-            return _context.Set<Prospect>().Any(c => c.Email.Address == email);
+            return DbSet.Any(c => c.Email.Address == email);
         }
     }
 }

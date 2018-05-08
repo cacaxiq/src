@@ -19,8 +19,8 @@ namespace Base.Bus
 
         public Task RaiseEvent<T>(T @event) where T : Event
         {
-            if (!@event.MessageType.Equals("DomainNotification"))
-                _eventStore?.Save(@event);
+            //if (!@event.MessageType.Equals("DomainNotification"))
+            //    _eventStore?.Save(@event);
 
             return Publish(@event);
         }

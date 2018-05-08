@@ -7,7 +7,15 @@ namespace Base.ExternalData.Context
     {
         public BaseContext(DbContextOptions<BaseContext> options)
                    : base(options)
-        { }
+        {
+           
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

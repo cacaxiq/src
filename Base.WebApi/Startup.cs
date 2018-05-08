@@ -52,10 +52,15 @@ namespace Base.WebApi
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            //Enable middleware to serve swagger - ui(HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("http://localhost/Base.WebApi/swagger/v1/swagger.json", "Acheu meu apê - Api V1");
+            //});
+
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("http://localhost/Base.WebApi/swagger/v1/swagger.json", "Acheu meu apê - Api V1");
+                c.SwaggerEndpoint("http://localhost:8082/swagger/v1/swagger.json", "Acheu meu apê - Api V1");
             });
 
             app.UseMvc();

@@ -1,6 +1,7 @@
 ﻿using Base.Domain.Enums;
 using Base.Domain.ValueObjects;
 using Base.Shared.Domain.Command;
+using Base.Shared.Domain.ValueObjects;
 using Base.Shared.Enum;
 using System;
 
@@ -20,19 +21,13 @@ namespace Base.Domain.Commands.Intention
         public EPropertySituation PropertySituation { get; protected set; }
 
         public Entities.Intention Intention { get; protected set; }
-        public PriceRange PriceRange { get; protected set; }
-        public Place Place { get; protected set; }
 
         public override void FillEntities()
         {
-            Place = new Place(State, City, Neighborhood);
-            PriceRange = new PriceRange(LowestPrice, MaximumPrice);
-            if (Rent.HasValue)
-                Intention = new Entities.Intention(Rent.Value, PriceRange, Bedroom, Place, PropertyType, PropertySituation);
-            else
-                Intention = new Entities.Intention(PriceRange, Bedroom, Place, PropertyType, PropertySituation);
+            Intention = new Entities.Intention(LowestPrice, MaximumPrice, Bedroom, State, City, Neighborhood, PropertyType, PropertySituation);
 
-            AddNotifications(Place, PriceRange, Intention);
+            if (Rent.HasValue)
+                Intention.AddRent(Rent.Value);
         }
     }
 }

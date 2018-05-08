@@ -9,13 +9,12 @@ using MediatR;
 
 namespace Base.Domain.CommandHandlers
 {
-    public class ProspectHandler : CommandHandler, 
+    public class ProspectHandler : CommandHandler,
         INotificationHandler<CreateProspectCommand>,
         INotificationHandler<UpdateProspectCommand>,
         INotificationHandler<RemoveProspectCommand>
     {
         IProspectRepository prospectRepository;
-        private readonly IMediatorHandler Bus;
 
         public ProspectHandler(
             IProspectRepository _prospectRepository,
@@ -25,7 +24,6 @@ namespace Base.Domain.CommandHandlers
                 : base(uow, bus, notifications)
         {
             prospectRepository = _prospectRepository;
-            Bus = bus;
         }
 
         public Task Handle(CreateProspectCommand notification, CancellationToken cancellationToken)
@@ -40,11 +38,11 @@ namespace Base.Domain.CommandHandlers
 
             if (prospectRepository.ExistProspectWithEmail(notification.Prospect.Email.Address))
             {
-                Bus.RaiseEvent(new DomainNotification(notification.MessageType, "E-mail já foi cadastrado."));
+                _bus.RaiseEvent(new DomainNotification(notification.MessageType, "E-mail já foi cadastrado."));
                 return Task.CompletedTask;
             }
 
-            var result = prospectRepository.Add(notification.Prospect);
+            prospectRepository.Add(notification.Prospect);
 
             if (Commit())
             {
@@ -52,7 +50,7 @@ namespace Base.Domain.CommandHandlers
             }
             else
             {
-                Bus.RaiseEvent(new DomainNotification(notification.MessageType, "Não foi possivel salvar novo cliente."));
+                _bus.RaiseEvent(new DomainNotification(notification.MessageType, "Não foi possivel salvar novo cliente."));
                 return Task.CompletedTask;
             }
         }
@@ -75,7 +73,7 @@ namespace Base.Domain.CommandHandlers
             }
             else
             {
-                Bus.RaiseEvent(new DomainNotification(notification.MessageType, "Não foi possivel alterar cliente."));
+                _bus.RaiseEvent(new DomainNotification(notification.MessageType, "Não foi possivel alterar cliente."));
                 return Task.CompletedTask;
             }
         }
@@ -98,7 +96,7 @@ namespace Base.Domain.CommandHandlers
             }
             else
             {
-                Bus.RaiseEvent(new DomainNotification(notification.MessageType, "Não foi possivel alterar cliente."));
+                _bus.RaiseEvent(new DomainNotification(notification.MessageType, "Não foi possivel alterar cliente."));
                 return Task.CompletedTask;
             }
         }
