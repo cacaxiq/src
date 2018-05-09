@@ -36,7 +36,7 @@ namespace Base.Domain.Commands
         public override void FillEntities()
         {
             base.FillEntities();
-
+            Intention.AddProspect(ProspectId);
             Intention.UpdateEntity(IntenttionId);
         }
     }

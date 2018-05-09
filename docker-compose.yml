@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  base.webapi:
+    image: basewebapi
+    build:
+      context: .
+      dockerfile: Base.WebApi\Dockerfile

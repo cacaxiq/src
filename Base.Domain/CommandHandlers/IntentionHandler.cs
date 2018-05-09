@@ -67,6 +67,7 @@ namespace Base.Domain.CommandHandlers
                 return Task.CompletedTask;
             }
 
+
             intentionRepository.Update(notification.Intention);
 
             if (Commit())
