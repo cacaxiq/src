@@ -6,13 +6,15 @@ using Base.Application.Interfaces;
 using Base.Application.ViewModels;
 using Base.Shared.Domain.Notification;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Base.WebApi.Controllers
 {
+    [Authorize("Bearer")]
     [Produces("application/json")]
-    [Route("api/Prospects")]
+    [Route("api/[controller]")]
     public class ProspectsController : ApiController
     {
         IProspectAppService prospectAppService;

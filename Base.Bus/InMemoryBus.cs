@@ -19,15 +19,15 @@ namespace Base.Bus
 
         public Task RaiseEvent<T>(T @event) where T : Event
         {
-            //if (!@event.MessageType.Equals("DomainNotification"))
-            //    _eventStore?.Save(@event);
+            if (!@event.MessageType.Equals("DomainNotification"))
+               _eventStore?.Save(@event);
 
             return Publish(@event);
         }
 
-        public void SendCommand<T>(T command) where T : Command
+        public Task SendCommand<T>(T command) where T : Command
         {
-            _mediator.Publish(command);
+            return Publish(command);
         }
 
         private Task Publish<T>(T message) where T : Message

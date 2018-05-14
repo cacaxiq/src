@@ -32,6 +32,7 @@ namespace Base.IoC
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<IConfigurationProvider>(), sp.GetService));
             services.AddScoped<IIntentionAppService, IntentionAppService>();
             services.AddScoped<IProspectAppService, ProspectAppService>();
+            services.AddScoped<IUserAppService, UserAppService>();
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
@@ -47,6 +48,7 @@ namespace Base.IoC
             // ExternalData
             services.AddScoped<IIntentionRepository, IntentionRepository>();
             services.AddScoped<IProspectRepository, ProspectRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<BaseContext>();
 
