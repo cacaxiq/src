@@ -1,8 +1,6 @@
 ﻿using Base.Application.Interfaces;
 using Base.Application.ViewModels;
-using Base.Shared.Domain.Notification;
 using Base.WebApi.Security;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
@@ -21,48 +19,23 @@ namespace Base.WebApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         public object Post(
-            [FromBody]AccessCredentials credenciais,
+            [FromBody]UserViewModel user,
             [FromServices]IUserAppService userAppService,
             [FromServices]SigningConfigurations signingConfigurations,
-            [FromServices]TokenConfigurations tokenConfigurations,
-            [FromServices]IDistributedCache cache)
+            [FromServices]TokenConfigurations tokenConfigurations)
         {
             bool credenciaisValidas = false;
-            if (credenciais != null && !String.IsNullOrWhiteSpace(credenciais.UserID))
+            if (user != null && !String.IsNullOrWhiteSpace(user.UserID))
             {
-                var usuarioBase = userAppService.GetByUserID(credenciais.UserID);
+                var usuarioBase = userAppService.GetByUserID(user.UserID);
                 credenciaisValidas = (usuarioBase != null &&
-                    credenciais.UserID == usuarioBase.UserID &&
-                    credenciais.AccessKey == usuarioBase.AccessKey);
-            }
-            else if (credenciais.GrantType == "refresh_token")
-            {
-                if (!String.IsNullOrWhiteSpace(credenciais.RefreshToken))
-                {
-                    RefreshTokenData refreshTokenBase = null;
-
-                    string strTokenArmazenado =
-                        cache.GetString(credenciais.RefreshToken);
-                    if (!String.IsNullOrWhiteSpace(strTokenArmazenado))
-                    {
-                        refreshTokenBase = JsonConvert
-                            .DeserializeObject<RefreshTokenData>(strTokenArmazenado);
-                    }
-
-                    credenciaisValidas = (refreshTokenBase != null &&
-                        credenciais.UserID == refreshTokenBase.UserID &&
-                        credenciais.RefreshToken == refreshTokenBase.RefreshToken);
-
-                    // Elimina o token de refresh já que um novo será gerado
-                    if (credenciaisValidas)
-                        cache.Remove(credenciais.RefreshToken);
-                }
-
+                    user.UserID == usuarioBase.UserID &&
+                    user.AccessKey == usuarioBase.AccessKey);
             }
 
             if (credenciaisValidas)
             {
-                return GenerateToken(credenciais.UserID, signingConfigurations, tokenConfigurations, cache);
+                return GenerateToken(user.UserID, signingConfigurations, tokenConfigurations);
             }
             else
             {
@@ -74,7 +47,64 @@ namespace Base.WebApi.Controllers
             }
         }
 
-        private object GenerateToken(string userID,
+        private object GenerateToken(
+            string userID,
+            SigningConfigurations signingConfigurations,
+            TokenConfigurations tokenConfigurations)
+        {
+            ClaimsIdentity identity = new ClaimsIdentity(
+                new GenericIdentity(userID, "Login"),
+                new[] {
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+                        new Claim(JwtRegisteredClaimNames.UniqueName, userID)
+                }
+            );
+
+            DateTime dataCriacao = DateTime.Now;
+
+            var timeForToken = new TimeSpan();
+
+            switch (tokenConfigurations.Type)
+            {
+                case "Days":
+                    timeForToken = TimeSpan.FromDays(tokenConfigurations.Time);
+                    break;
+                case "Minutes":
+                    timeForToken = TimeSpan.FromMinutes(tokenConfigurations.Time);
+                    break;
+                case "Seconds":
+                    timeForToken = TimeSpan.FromSeconds(tokenConfigurations.Time);
+                    break;
+                default:
+                    break;
+            }
+
+            DateTime dataExpiracao = dataCriacao + timeForToken;
+
+            var handler = new JwtSecurityTokenHandler();
+            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+            {
+                Issuer = tokenConfigurations.Issuer,
+                Audience = tokenConfigurations.Audience,
+                SigningCredentials = signingConfigurations.SigningCredentials,
+                Subject = identity,
+                NotBefore = dataCriacao,
+                Expires = dataExpiracao
+            });
+            var token = handler.WriteToken(securityToken);
+
+            return new
+            {
+                authenticated = true,
+                created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
+                expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
+                accessToken = token,
+                message = "OK"
+            };
+        }
+
+        private object GenerateTokenRefresh(
+            string userID,
             SigningConfigurations signingConfigurations,
             TokenConfigurations tokenConfigurations,
             IDistributedCache cache)
@@ -88,13 +118,29 @@ namespace Base.WebApi.Controllers
             );
 
             DateTime dataCriacao = DateTime.Now;
-            DateTime dataExpiracao = dataCriacao +
-                TimeSpan.FromSeconds(tokenConfigurations.Seconds);
+
+            var timeForToken = new TimeSpan();
+
+            switch (tokenConfigurations.Type)
+            {
+                case "Days":
+                    timeForToken = TimeSpan.FromDays(tokenConfigurations.Time);
+                    break;
+                case "Minutes":
+                    timeForToken = TimeSpan.FromMinutes(tokenConfigurations.Time);
+                    break;
+                case "Seconds":
+                    timeForToken = TimeSpan.FromSeconds(tokenConfigurations.Time);
+                    break;
+                default:
+                    break;
+            }
+
+            DateTime dataExpiracao = dataCriacao + timeForToken;
 
             // Calcula o tempo máximo de validade do refresh token
             // (o mesmo será invalidado automaticamente pelo Redis)
-            TimeSpan finalExpiration =
-                TimeSpan.FromSeconds(tokenConfigurations.FinalExpiration);
+            TimeSpan finalExpiration = TimeSpan.FromSeconds(tokenConfigurations.FinalExpiration);
 
             var handler = new JwtSecurityTokenHandler();
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor
@@ -131,5 +177,65 @@ namespace Base.WebApi.Controllers
 
             return resultado;
         }
+
+        //[AllowAnonymous]
+        //[HttpPost]
+        //public object Refresh(
+        //    [FromBody]AccessCredentials credenciais,
+        //    [FromServices]IUserAppService userAppService,
+        //    [FromServices]SigningConfigurations signingConfigurations,
+        //    [FromServices]TokenConfigurations tokenConfigurations,
+        //    [FromServices]IDistributedCache cache)
+        //{
+        //    bool credenciaisValidas = false;
+        //    if (credenciais != null && !String.IsNullOrWhiteSpace(credenciais.UserID))
+        //    {
+        //        var usuarioBase = userAppService.GetByUserID(credenciais.UserID);
+        //        credenciaisValidas = (usuarioBase != null &&
+        //            credenciais.UserID == usuarioBase.UserID &&
+        //            credenciais.AccessKey == usuarioBase.AccessKey);
+        //    }
+        //    else if (credenciais.GrantType == "refresh_token")
+        //    {
+        //        if (!String.IsNullOrWhiteSpace(credenciais.RefreshToken))
+        //        {
+        //            RefreshTokenData refreshTokenBase = null;
+
+        //            string strTokenArmazenado =
+        //                cache.GetString(credenciais.RefreshToken);
+        //            if (!String.IsNullOrWhiteSpace(strTokenArmazenado))
+        //            {
+        //                refreshTokenBase = JsonConvert
+        //                    .DeserializeObject<RefreshTokenData>(strTokenArmazenado);
+        //            }
+
+        //            credenciaisValidas = (refreshTokenBase != null &&
+        //                credenciais.UserID == refreshTokenBase.UserID &&
+        //                credenciais.RefreshToken == refreshTokenBase.RefreshToken);
+
+        //            // Elimina o token de refresh já que um novo será gerado
+        //            if (credenciaisValidas)
+        //                cache.Remove(credenciais.RefreshToken);
+        //        }
+
+        //    }
+
+        //    if (credenciaisValidas)
+        //    {
+        //        return GenerateTokenRefresh(
+        //            credenciais.UserID, 
+        //            signingConfigurations, 
+        //            tokenConfigurations, 
+        //            cache);
+        //    }
+        //    else
+        //    {
+        //        return new
+        //        {
+        //            authenticated = false,
+        //            message = "Falha ao autenticar"
+        //        };
+        //    }
+        //}
     }
 }

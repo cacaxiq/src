@@ -2,6 +2,7 @@
 using Base.Application.ViewModels;
 using Base.Domain.Commands;
 using Base.Domain.Commands.Prospect;
+using Base.Domain.Commands.User;
 
 namespace Base.Application.AutoMapper
 {
@@ -56,6 +57,25 @@ namespace Base.Application.AutoMapper
                         c.CellPhone,
                         c.IsWhatsApp,
                         c.HomePhone)).ForAllOtherMembers(c => c.Ignore());
+            #endregion
+
+            #region User
+            CreateMap<UserViewModel, CreateUserCommand>()
+                    .ConstructProjectionUsing(c => new CreateUserCommand(
+                        c.Address,
+                        c.FirstName,
+                        c.LastName,
+                        c.AccessKey,
+                        c.UserID)).ForAllOtherMembers(c => c.Ignore());
+
+            CreateMap<UserViewModel, UpdateUserCommand>()
+                    .ConstructProjectionUsing(c => new UpdateUserCommand(
+                        c.Id,
+                        c.Address,
+                        c.FirstName,
+                        c.LastName,
+                        c.AccessKey,
+                        c.UserID)).ForAllOtherMembers(c => c.Ignore());
             #endregion
         }
     }

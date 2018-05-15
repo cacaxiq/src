@@ -2,11 +2,9 @@
 using AutoMapper.QueryableExtensions;
 using Base.Application.Interfaces;
 using Base.Application.ViewModels;
-using Base.Domain.Commands;
 using Base.Domain.Commands.Prospect;
 using Base.Domain.Interface;
 using Base.Shared.Domain.Bus;
-using MediatR;
 using System;
 using System.Collections.Generic;
 

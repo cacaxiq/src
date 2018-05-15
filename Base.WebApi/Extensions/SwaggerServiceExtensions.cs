@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Collections.Generic;
 
 namespace Base.WebApi.Extensions
 {
@@ -12,6 +13,11 @@ namespace Base.WebApi.Extensions
             {
                 c.SwaggerDoc("v1.0", new Info { Title = "Main API v1.0", Version = "v1.0" });
 
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { }},
+                };
+
                 c.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -19,6 +25,7 @@ namespace Base.WebApi.Extensions
                     In = "header",
                     Type = "apiKey"
                 });
+                c.AddSecurityRequirement(security);
             });
 
             return services;
@@ -30,6 +37,7 @@ namespace Base.WebApi.Extensions
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("http://localhost/Base.WebApi/swagger/v1.0/swagger.json", "Versioned API v1.0");
+                c.DocumentTitle = "Title Documentation";
                 c.DocExpansion(DocExpansion.None);
             });
 

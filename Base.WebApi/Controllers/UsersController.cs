@@ -1,7 +1,11 @@
-﻿using Base.Shared.Domain.Notification;
+﻿using Base.Application.Interfaces;
+using Base.Application.ViewModels;
+using Base.Shared.Domain.Notification;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace Base.WebApi.Controllers
 {
@@ -10,9 +14,56 @@ namespace Base.WebApi.Controllers
     [Route("api/[controller]")]
     public class UsersController : ApiController
     {
-        protected UsersController(INotificationHandler<DomainNotification> notifications)
+        IUserAppService userAppService;
+
+        public UsersController(
+            IUserAppService userAppService,
+            INotificationHandler<DomainNotification> notifications)
             : base(notifications)
         {
+            this.userAppService = userAppService;
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Response(userAppService.GetAll());
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Post([FromBody]UserViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                NotifyModelStateErrors();
+                return Response(model);
+            }
+
+            model = await userAppService.Create(model);
+
+            return Response(model);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody]UserViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                NotifyModelStateErrors();
+                return Response(model);
+            }
+
+            userAppService.Update(model);
+
+            return Response(model);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(Guid id)
+        {
+            userAppService.Remove(id);
+            return Response(id);
         }
     }
 }

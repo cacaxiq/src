@@ -27,6 +27,14 @@ namespace Base.Application.AutoMapper
                 .ForMember(d => d.CellPhone, o => o.MapFrom(p => p.CellPhone.Number))
                 .ForMember(d => d.IsWhatsApp, o => o.MapFrom(p => p.CellPhone.IsWhatsApp))
                 .ReverseMap();
+
+            CreateMap<User, UserViewModel>()
+                .ForMember(d => d.FirstName, o => o.MapFrom(p => p.Name.FirstName))
+                .ForMember(d => d.LastName, o => o.MapFrom(p => p.Name.LastName))
+                .ForMember(d => d.Address, o => o.MapFrom(p => p.Email.Address))
+                .ForMember(d => d.AccessKey, o => o.MapFrom(p => p.AccessKey))
+                .ForMember(d => d.UserID, o => o.MapFrom(p => p.UserID))
+                .ReverseMap();
         }
     }
 }

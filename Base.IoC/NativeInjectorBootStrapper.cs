@@ -17,6 +17,7 @@ using Base.Shared.Domain.Event;
 using Base.ExternalData.EventSourcing;
 using Base.Domain.CommandHandlers;
 using Base.Domain.Commands.Prospect;
+using Base.Domain.Commands.User;
 
 namespace Base.IoC
 {
@@ -44,6 +45,9 @@ namespace Base.IoC
             services.AddScoped<INotificationHandler<CreateProspectCommand>, ProspectHandler>();
             services.AddScoped<INotificationHandler<UpdateProspectCommand>, ProspectHandler>();
             services.AddScoped<INotificationHandler<RemoveProspectCommand>, ProspectHandler>();
+            services.AddScoped<INotificationHandler<CreateUserCommand>, UserHandler>();
+            services.AddScoped<INotificationHandler<UpdateUserCommand>, UserHandler>();
+            services.AddScoped<INotificationHandler<RemoveUserCommand>, UserHandler>();
 
             // ExternalData
             services.AddScoped<IIntentionRepository, IntentionRepository>();

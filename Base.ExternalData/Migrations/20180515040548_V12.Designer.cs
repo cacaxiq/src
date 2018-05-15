@@ -13,9 +13,10 @@ using System;
 namespace Base.ExternalData.Migrations
 {
     [DbContext(typeof(BaseContext))]
-    partial class BaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180515040548_V12")]
+    partial class V12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,24 +73,6 @@ namespace Base.ExternalData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Prospect");
-                });
-
-            modelBuilder.Entity("Base.Domain.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AccessKey")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("varchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Base.Domain.Entities.Intention", b =>
@@ -170,45 +153,6 @@ namespace Base.ExternalData.Migrations
                             b1.HasOne("Base.Domain.Entities.Prospect")
                                 .WithOne("Name")
                                 .HasForeignKey("Base.Shared.Domain.ValueObjects.Name", "ProspectId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-                });
-
-            modelBuilder.Entity("Base.Domain.Entities.User", b =>
-                {
-                    b.OwnsOne("Base.Shared.Domain.ValueObjects.Email", "Email", b1 =>
-                        {
-                            b1.Property<Guid?>("UserId");
-
-                            b1.Property<string>("Address")
-                                .HasColumnName("EmailAddress")
-                                .HasMaxLength(100);
-
-                            b1.ToTable("User");
-
-                            b1.HasOne("Base.Domain.Entities.User")
-                                .WithOne("Email")
-                                .HasForeignKey("Base.Shared.Domain.ValueObjects.Email", "UserId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
-                    b.OwnsOne("Base.Shared.Domain.ValueObjects.Name", "Name", b1 =>
-                        {
-                            b1.Property<Guid?>("UserId");
-
-                            b1.Property<string>("FirstName")
-                                .HasColumnName("FirstName")
-                                .HasMaxLength(50);
-
-                            b1.Property<string>("LastName")
-                                .HasColumnName("LastName")
-                                .HasMaxLength(50);
-
-                            b1.ToTable("User");
-
-                            b1.HasOne("Base.Domain.Entities.User")
-                                .WithOne("Name")
-                                .HasForeignKey("Base.Shared.Domain.ValueObjects.Name", "UserId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
