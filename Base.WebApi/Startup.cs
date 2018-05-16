@@ -24,18 +24,11 @@ namespace Base.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             NativeInjectorBootStrapper.RegisterServices(services);
-
             services.AddTokenSecurity(Configuration);
-
             services.AddMvc();
-
             services.AddSwaggerDocumentation();
-
             services.AddAutoMapper();
-
-            //Add Mediatr services.
             services.AddMediatR(typeof(Startup));
         }
 
@@ -45,13 +38,8 @@ namespace Base.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwaggerDocumentation();
             }
-            else
-            {
-                app.UseSwaggerDocumentationAzure();
-            }
-
+            app.UseSwaggerDocumentation(Configuration);
             app.UseMvc();
         }
     }

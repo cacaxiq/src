@@ -50,7 +50,7 @@ namespace Base.WebApi.Extensions
                 // Tempo de tolerância para a expiração de um token (utilizado
                 // caso haja problemas de sincronismo de horário entre diferentes
                 // computadores envolvidos no processo de comunicação)
-                paramsValidation.ClockSkew = TimeSpan.Zero;
+                paramsValidation.ClockSkew = TimeSpan.FromMinutes(10);
             });
 
             // Ativa o uso do token como forma de autorizar o acesso

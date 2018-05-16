@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Collections.Generic;
@@ -31,25 +32,13 @@ namespace Base.WebApi.Extensions
             return services;
         }
 
-        public static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app)
+        public static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app, IConfiguration Configuration)
         {
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("http://localhost/Base.WebApi/swagger/v1.0/swagger.json", "Versioned API v1.0");
+                c.SwaggerEndpoint($"{Configuration["UrlSwagger"]}/swagger/v1.0/swagger.json", "Versioned API v1.0");
                 c.DocumentTitle = "Title Documentation";
-                c.DocExpansion(DocExpansion.None);
-            });
-
-            return app;
-        }
-
-        public static IApplicationBuilder UseSwaggerDocumentationAzure(this IApplicationBuilder app)
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("http://acheimeuape.azurewebsites.net/swagger/v1.0/swagger.json", "Versioned API v1.0");
                 c.DocExpansion(DocExpansion.None);
             });
 
