@@ -1,10 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Base.Mobile.CrossPresentation.App">
-	<Application.Resources>
-
-		<!-- Application resource dictionary -->
-
-	</Application.Resources>
+<Application
+    x:Class="Base.Mobile.CrossPresentation.App"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <OnPlatform x:Key="NormalFont" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Hello-Angel.ttf#Hello-Angel" />
+                <On Platform="iOS" Value="Fonts/Hello-Angel" />
+            </OnPlatform>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

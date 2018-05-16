@@ -13,7 +13,7 @@ namespace Base.Mobile.CrossPresentation
 		{
 			InitializeComponent();
 
-			MainPage = new Base.Mobile.CrossPresentation.MainPage();
+			//MainPage = new Base.Mobile.CrossPresentation.MainPage();
 		}
 
 		protected override void OnStart ()

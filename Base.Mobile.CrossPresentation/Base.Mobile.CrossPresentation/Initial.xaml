@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Base.Mobile.CrossPresentation.Initial"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundImage="backScreen.jpg">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label
+                Grid.ColumnSpan="2"
+                FontAttributes="Bold"
+                FontFamily="{StaticResource NormalFont}"
+                FontSize="Large"
+                HorizontalTextAlignment="Center"
+                Text="Achei meu Lar"
+                VerticalOptions="Center" />
+            <Button Grid.Row="1" Text="Login" />
+
+            <Button
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="Criar Login" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

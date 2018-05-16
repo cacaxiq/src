@@ -50,5 +50,7 @@
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
 	<string>Base.Mobile.CrossPresentation</string>
+	<key>UIAppFonts</key>
+	<string>Fonts/Hello-Angel.ttf</string>
 </dict>
 </plist>
