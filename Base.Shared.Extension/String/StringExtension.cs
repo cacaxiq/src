@@ -16,5 +16,10 @@ namespace Base.Shared.Extension.String
         {
             return Regex.Replace(number, @"(\d{2})(\d{4})(\d{4})", "($1) $2 $3");
         }
+
+        public static bool Contains(this string source, string toCheck, StringComparison comp)
+        {
+            return source != null && toCheck != null && source.IndexOf(toCheck, comp) >= 0;
+        }
     }
 }
