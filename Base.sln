@@ -75,7 +75,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base.Mobile.CrossPresentati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base.Mobile.Droid", "Base.Mobile.CrossPresentation\Base.Mobile.Droid\Base.Mobile.Droid.csproj", "{27002E6C-6EB6-4A52-A7E4-4D5317608911}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base.ViewModel", "..\Base.ViewModel\Base.ViewModel.csproj", "{46B874BE-AD97-426C-8941-4F80642274C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base.ViewModel", "Base.ViewModel\Base.ViewModel.csproj", "{46B874BE-AD97-426C-8941-4F80642274C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

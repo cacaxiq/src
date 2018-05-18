@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Base.ViewModel\Base.ViewModel.csproj" />
+    <ProjectReference Include="..\..\Base.ViewModel\Base.ViewModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
