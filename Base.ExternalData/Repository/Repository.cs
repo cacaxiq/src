@@ -58,9 +58,9 @@ namespace Base.ExternalData.Repository
             return await DbSet.SingleOrDefaultAsync(match);
         }
 
-        public ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> match)
+        public IQueryable<TEntity> FindAll(Expression<Func<TEntity, bool>> match)
         {
-            return DbSet.Where(match).ToList();
+            return DbSet.Where(match);
         }
 
         public async Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> match)

@@ -25,9 +25,10 @@ namespace Base.WebApi.Controllers
             [FromServices]TokenConfigurations tokenConfigurations)
         {
             bool credenciaisValidas = false;
+            var usuarioBase =new UserViewModel();
             if (user != null && !String.IsNullOrWhiteSpace(user.UserID))
             {
-                var usuarioBase = userAppService.GetByUserID(user.UserID);
+                usuarioBase = userAppService.GetByUserID(user.UserID);
                 credenciaisValidas = (usuarioBase != null &&
                     user.UserID == usuarioBase.UserID &&
                     user.AccessKey == usuarioBase.AccessKey);
@@ -35,7 +36,7 @@ namespace Base.WebApi.Controllers
 
             if (credenciaisValidas)
             {
-                return GenerateToken(user.UserID, signingConfigurations, tokenConfigurations);
+                return GenerateToken(usuarioBase, signingConfigurations, tokenConfigurations);
             }
             else
             {
@@ -48,15 +49,15 @@ namespace Base.WebApi.Controllers
         }
 
         private object GenerateToken(
-            string userID,
+            UserViewModel user,
             SigningConfigurations signingConfigurations,
             TokenConfigurations tokenConfigurations)
         {
             ClaimsIdentity identity = new ClaimsIdentity(
-                new GenericIdentity(userID, "Login"),
+                new GenericIdentity(user.UserID, "Login"),
                 new[] {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, userID)
+                        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserID)
                 }
             );
 
@@ -99,7 +100,7 @@ namespace Base.WebApi.Controllers
                 created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
                 expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
                 accessToken = token,
-                message = "OK"
+                User = user
             };
         }
 

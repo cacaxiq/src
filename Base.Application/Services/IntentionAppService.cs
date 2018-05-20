@@ -8,6 +8,7 @@ using Base.Shared.Domain.Bus;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Base.Application.Services
 {
@@ -57,6 +58,11 @@ namespace Base.Application.Services
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+
+        public IEnumerable<IntentionViewModel> GetAllByProspect(Guid prospectId)
+        {
+            return _intentionRepository.FindAll(x => x.ProspectId == prospectId).ProjectTo<IntentionViewModel>(_mapperConfigurationProvider);
         }
     }
 }

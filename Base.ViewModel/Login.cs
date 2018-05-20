@@ -1,4 +1,5 @@
 ﻿using Base.ViewModel.Base;
+using Base.ViewModel.ServiceApi.InterfaceApi;
 using ReactiveUI;
 using Splat;
 using System;
@@ -24,7 +25,7 @@ namespace Base.ViewModel
         }
 
         public ReactiveCommand LoginCommand { get; set; }
-
+        private ILoginApi LoginApi;
 
         ObservableAsPropertyHelper<bool> _isLoading;
         public bool IsLoading
@@ -32,15 +33,16 @@ namespace Base.ViewModel
             get { return _isLoading?.Value ?? false; }
         }
 
-
         ObservableAsPropertyHelper<bool> _isValid;
         public bool IsValid
         {
             get { return _isValid?.Value ?? false; }
         }
 
-        public Login()
+        public Login(ILoginApi loginApi = null)
         {
+            LoginApi = loginApi ?? Locator.Current.GetService<ILoginApi>();
+
             UrlPathSegment = "ReactiveUI with Xamarin!";
             HostScreen = Locator.Current.GetService<IScreen>();
             PrepareObservables();
@@ -58,8 +60,9 @@ namespace Base.ViewModel
               async execute =>
               {
                   var random = new Random();
-                  await Task.Delay(random.Next(400, 2000));
-                  HostScreen.Router.Navigate.Execute(new ViewModel.Intention()).Subscribe();
+                  var result = await LoginApi.GetToken(new Model.Login.UserInfoDTO { UserId = Username, AccessKey = Password });
+                  if (result.Success)
+                      HostScreen.Router.Navigate.Execute(new ViewModel.Intention()).Subscribe();
               }, canExecuteLogin);
 
 

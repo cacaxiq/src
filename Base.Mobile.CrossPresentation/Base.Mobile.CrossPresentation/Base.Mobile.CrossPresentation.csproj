@@ -5,11 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />
     <PackageReference Include="ReactiveUI.XamForms" Version="8.2.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="0.6.0-preview" />
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Base.CrossMobile.IoC\Base.CrossMobile.IoC.csproj" />
     <ProjectReference Include="..\..\Base.ViewModel\Base.ViewModel.csproj" />
   </ItemGroup>
 

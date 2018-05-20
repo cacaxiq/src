@@ -30,6 +30,12 @@ namespace Base.WebApi.Controllers
             return Response(userAppService.GetAll());
         }
 
+        [HttpGet("{userId}")]
+        public IActionResult Get(Guid userId)
+        {
+            return Response(userAppService.GetById(userId));
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody]UserViewModel model)

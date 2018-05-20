@@ -14,7 +14,7 @@ namespace Base.Shared.Domain.Interface
         void Delete(TEntity entity);
         void Delete(object key);
         TEntity Find(Expression<Func<TEntity, bool>> match);
-        ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> match);
+        IQueryable<TEntity> FindAll(Expression<Func<TEntity, bool>> match);
         Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> match);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> match);
         IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate);
