@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace Base.ViewModel.ServiceApi.Service
 {
@@ -17,7 +18,7 @@ namespace Base.ViewModel.ServiceApi.Service
     {
         public IUserDialogs userDialogs = UserDialogs.Instance;
         public bool IsConnected { get; set; }
-        public bool IsReachable { get; set; }
+        public bool IsBusy { get; set; }
         public Dictionary<int, CancellationTokenSource> runningTasks = new Dictionary<int, CancellationTokenSource>();
         public Dictionary<string, Task<HttpResponseMessage>> taskContainer = new Dictionary<string, Task<HttpResponseMessage>>();
 
@@ -25,6 +26,7 @@ namespace Base.ViewModel.ServiceApi.Service
         {
             IsConnected = Connectivity.NetworkAccess == NetworkAccess.Internet;
             Connectivity.ConnectivityChanged += OnConnectivityChanged;
+            IsBusy = false;
         }
 
         void OnConnectivityChanged(ConnectivityChangedEventArgs e)
@@ -84,29 +86,44 @@ namespace Base.ViewModel.ServiceApi.Service
             return data;
         }
 
-        public async Task RunSafe(Task task,bool isBusy, bool ShowLoading = true, string loadinMessage = null)
+        public async Task RunSafe(Task task, bool ShowLoading = true, string loadinMessage = null)
         {
             try
             {
-                if (isBusy) return;
+                if (IsBusy) return;
 
-                isBusy = true;
+                IsBusy = true;
 
-                if (ShowLoading) UserDialogs.Instance.ShowLoading(loadinMessage ?? "Loading");
+                if (ShowLoading)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.ShowLoading(loadinMessage ?? "Loading");
+                    });
+                }
 
                 await task;
             }
             catch (Exception e)
             {
-                isBusy = false;
+                IsBusy = false;
                 UserDialogs.Instance.HideLoading();
                 Debug.WriteLine(e.ToString());
-                UserDialogs.Instance.Toast("Check your internet connection", TimeSpan.FromSeconds(5));
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    UserDialogs.Instance.Toast("Check your internet connection", TimeSpan.FromSeconds(5));
+                });
             }
             finally
             {
-                isBusy = false;
-                if (ShowLoading) UserDialogs.Instance.HideLoading();
+                IsBusy = false;
+                if (ShowLoading)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+                    });
+                }
             }
         }
     }

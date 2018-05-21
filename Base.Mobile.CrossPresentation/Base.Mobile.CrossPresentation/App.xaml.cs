@@ -1,4 +1,7 @@
-﻿using ReactiveUI;
+﻿using Base.CrossMobile.IoC;
+using Base.ViewModel.ServiceApi;
+using Base.ViewModel.ServiceApi.InterfaceApi;
+using ReactiveUI;
 using ReactiveUI.XamForms;
 using Splat;
 using System;
@@ -22,6 +25,11 @@ namespace Base.Mobile.CrossPresentation
             Locator.CurrentMutable.RegisterConstant(this, typeof(IScreen));
             Locator.CurrentMutable.Register(() => new Login(), typeof(IViewFor<ViewModel.Login>));
             Locator.CurrentMutable.Register(() => new IntentionListView(), typeof(IViewFor<ViewModel.Intention>));
+            Locator.CurrentMutable.RegisterConstant(new UserApi(), typeof(IUserApi));
+            Locator.CurrentMutable.RegisterConstant(new IntentionApi(), typeof(IIntentionApi));
+            Locator.CurrentMutable.RegisterConstant(new ProspectApi(), typeof(IProspectApi));
+            Locator.CurrentMutable.RegisterConstant(new LoginApi(), typeof(ILoginApi));
+
             Router.NavigateAndReset.Execute(new ViewModel.Login());
 
             MainPage = new RoutedViewHost();

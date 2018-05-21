@@ -28,7 +28,7 @@ namespace Base.ViewModel.ServiceApi
             var task = RemoteRequestAsync(apiService.GetApi(Priority.UserInitiated).GetToken(userInfo));
             runningTasks.Add(task.Id, cts);
 
-            await RunSafe(task, false);
+            await RunSafe(task, true, "Logando...");
 
             var response = task.Result;
 

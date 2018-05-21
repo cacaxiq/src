@@ -51,7 +51,7 @@ namespace Base.ViewModel
         private void PrepareObservables()
         {
 
-            this.WhenAnyValue(e => e.Username, p => p.Password, (emailAddress, password) => (!string.IsNullOrEmpty(emailAddress)) && !string.IsNullOrEmpty(password) && password.Length > 6)
+            this.WhenAnyValue(e => e.Username, p => p.Password, (emailAddress, password) => (!string.IsNullOrEmpty(emailAddress)) && !string.IsNullOrEmpty(password) && password.Length > 5)
                 .ToProperty(this, v => v.IsValid, out _isValid);
 
             var canExecuteLogin = this.WhenAnyValue(x => x.IsLoading, x => x.IsValid, (isLoading, IsValid) => !isLoading && IsValid);
@@ -59,7 +59,6 @@ namespace Base.ViewModel
             LoginCommand = ReactiveCommand.CreateFromTask(
               async execute =>
               {
-                  var random = new Random();
                   var result = await LoginApi.GetToken(new Model.Login.UserInfoDTO { UserId = Username, AccessKey = Password });
                   if (result.Success)
                       HostScreen.Router.Navigate.Execute(new ViewModel.Intention()).Subscribe();
