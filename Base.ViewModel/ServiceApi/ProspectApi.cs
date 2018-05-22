@@ -7,6 +7,7 @@ using Base.ViewModel.ServiceApi.Service;
 using Fusillade;
 using Newtonsoft.Json;
 using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -23,82 +24,19 @@ namespace Base.ViewModel.ServiceApi
             apiService = new ApiService<IPropesctRefit>(Config.ApiUrl);
         }
 
-        public async Task<Response<ProspectDTO>> Create(ProspectDTO _prospect)
+        public Task<HttpResponseMessage> Create(ProspectDTO _prospect)
         {
-            var prospect = new Response<ProspectDTO>();
-            var cts = new CancellationTokenSource();
-            var task = RemoteRequestAsync(apiService.GetApi(Priority.UserInitiated).Create(_prospect, token));
-            runningTasks.Add(task.Id, cts);
-
-            await RunSafe(task, false);
-
-            var response = task.Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                var data = await response.Content.ReadAsStringAsync();
-                prospect = await Task.Run(() => JsonConvert.DeserializeObject<Response<ProspectDTO>>(data));
-            }
-            else
-            {
-                Device.BeginInvokeOnMainThread(() => {
-                    userDialogs.Alert("Unable to get data", "Error", "Ok");
-                });
-            }
-
-            return prospect;
+            return CallApi(apiService.GetApi(Priority.UserInitiated).Create(_prospect, token));
         }
 
-        public async Task<Response<ProspectDTO>> Update(ProspectDTO _prospect)
+        public Task<HttpResponseMessage> Update(ProspectDTO _prospect)
         {
-            var prospect = new Response<ProspectDTO>();
-            var cts = new CancellationTokenSource();
-            var task = RemoteRequestAsync(apiService.GetApi(Priority.UserInitiated).Update(_prospect, token));
-            runningTasks.Add(task.Id, cts);
-
-            await RunSafe(task, false);
-
-            var response = task.Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                var data = await response.Content.ReadAsStringAsync();
-                prospect = await Task.Run(() => JsonConvert.DeserializeObject<Response<ProspectDTO>>(data));
-            }
-            else
-            {
-                Device.BeginInvokeOnMainThread(() => {
-                    userDialogs.Alert("Unable to get data", "Error", "Ok");
-                });
-            }
-
-            return prospect;
+            return CallApi(apiService.GetApi(Priority.UserInitiated).Update(_prospect, token)); ;
         }
 
-        public async Task<Response<string>> Delete(Guid id)
+        public Task<HttpResponseMessage> Delete(Guid id)
         {
-            var prospect = new Response<string>();
-            var cts = new CancellationTokenSource();
-            var task = RemoteRequestAsync(apiService.GetApi(Priority.UserInitiated).Delete(id, token));
-            runningTasks.Add(task.Id, cts);
-
-            await RunSafe(task, false);
-
-            var response = task.Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                var data = await response.Content.ReadAsStringAsync();
-                prospect = await Task.Run(() => JsonConvert.DeserializeObject<Response<string>>(data));
-            }
-            else
-            {
-                Device.BeginInvokeOnMainThread(() => {
-                    userDialogs.Alert("Unable to get data", "Error", "Ok");
-                });
-            }
-
-            return prospect;
+            return CallApi(apiService.GetApi(Priority.UserInitiated).Delete(id, token)); ;
         }
     }
 }

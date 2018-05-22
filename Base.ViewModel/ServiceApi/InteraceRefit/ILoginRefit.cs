@@ -7,7 +7,7 @@ namespace Base.ViewModel.ServiceApi.InteraceRefit
 {
     public interface ILoginRefit
     {
-        [Get("/api/Token")]
+        [Post("/api/Token")]
         Task<HttpResponseMessage> GetToken([Body]UserInfoDTO userInfo);
     }
 }

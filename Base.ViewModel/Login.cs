@@ -1,4 +1,5 @@
 ﻿using Base.ViewModel.Base;
+using Base.ViewModel.Model.Login;
 using Base.ViewModel.ServiceApi.InterfaceApi;
 using ReactiveUI;
 using Splat;
@@ -59,9 +60,10 @@ namespace Base.ViewModel
             LoginCommand = ReactiveCommand.CreateFromTask(
               async execute =>
               {
-                  var result = await LoginApi.GetToken(new Model.Login.UserInfoDTO { UserId = Username, AccessKey = Password });
-                  if (result.Success)
-                      HostScreen.Router.Navigate.Execute(new ViewModel.Intention()).Subscribe();
+                  var accessDTO = new Ref<AccessDTO>();
+                  await RunSafe(ExecuteApi(LoginApi.GetToken(new UserInfoDTO { AccessKey = Password, UserId = Username }), accessDTO));
+                  if (accessDTO.Value.Authenticated)
+                      HostScreen.Router.Navigate.Execute(new Intention()).Subscribe();
               }, canExecuteLogin);
 
 
