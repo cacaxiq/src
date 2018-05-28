@@ -2,13 +2,43 @@
 <Application
     x:Class="Base.Mobile.CrossPresentation.App"
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:adMob="clr-namespace:Base.Mobile.CrossPresentation.Custom.Renders"
+    xmlns:adMobid="clr-namespace:Base.Constants;assembly=Base.Constants">
     <Application.Resources>
         <ResourceDictionary>
             <OnPlatform x:Key="NormalFont" x:TypeArguments="x:String">
                 <On Platform="Android" Value="Hello-Angel.ttf#Hello-Angel" />
-                <On Platform="iOS" Value="Fonts/Hello-Angel" />
+                <On Platform="iOS" Value="Hello-Angel" />
             </OnPlatform>
+
+            <OnPlatform x:Key="IconFont" x:TypeArguments="x:String">
+                <On Platform="Android" Value="fontawesome.ttf#fontawesome" />
+                <On Platform="iOS" Value="fontawesome" />
+            </OnPlatform>
+
+            <OnPlatform x:Key="AdMobID" x:TypeArguments="x:String">
+                <On Platform="Android" Value="{x:Static adMobid:AppConstants.AdmobKeyAndroid}" />
+                <On Platform="iOS" Value="{x:Static adMobid:AppConstants.AdmobKeyiOS}" />
+            </OnPlatform>
+
+            <ControlTemplate x:Key="TemplateAdMob">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ContentPresenter />
+                    <adMob:AdMobView
+                        x:Name="AdUnit"
+                        Grid.Row="1"
+                        AdUnitId="{StaticResource AdMobID}" />
+                </Grid>
+            </ControlTemplate>
+
+            <Style TargetType="ContentPage">
+                <Setter Property="Padding" Value="20,10" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

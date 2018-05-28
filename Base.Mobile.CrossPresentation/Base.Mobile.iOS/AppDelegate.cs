@@ -1,4 +1,5 @@
-﻿using Base.Mobile.CrossPresentation;
+﻿using Base.Constants;
+using Base.Mobile.CrossPresentation;
 using Foundation;
 using UIKit;
 
@@ -20,9 +21,17 @@ namespace Base.Mobile.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            InitializePlugins();
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
+        }
+
+        private void InitializePlugins()
+        {
+            Google.MobileAds.MobileAds.Configure(AppConstants.AdmobKeyiOS);
         }
     }
 }

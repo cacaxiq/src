@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <basePage:ContentPageBase
-    x:Class="Base.Mobile.CrossPresentation.IntentionListView"
+    x:Class="Base.Mobile.CrossPresentation.IntentionsList"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:basePage="clr-namespace:Base.Mobile.CrossPresentation.Base"
     xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
     xmlns:vms="clr-namespace:Base.ViewModel;assembly=Base.ViewModel"
-    x:TypeArguments="vms:Intention">
+    x:TypeArguments="vms:IntentionsList"
+    ControlTemplate="{StaticResource TemplateAdMob}">
     <ContentPage.Content>
         <StackLayout>
             <Entry

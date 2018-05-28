@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using Base.Constants;
 using Newtonsoft.Json;
 using ReactiveUI;
 using Splat;
@@ -6,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Base.ViewModel.Base
 {
@@ -13,6 +15,7 @@ namespace Base.ViewModel.Base
     {
         protected IUserDialogs Dialog = UserDialogs.Instance;
         public bool IsBusy { get; set; }
+        public string AdUnitId { get; set; }
 
         public string UrlPathSegment
         {
@@ -38,6 +41,14 @@ namespace Base.ViewModel.Base
             HostScreen = hostScreen ?? Locator.Current.GetService<IScreen>();
         }
 
+        protected void SetIdAdMob()
+        {
+            if (Device.RuntimePlatform == Device.iOS)
+                AdUnitId = AppConstants.AdmobKeyiOS;
+            else
+                AdUnitId = AppConstants.AdmobKeyAndroid;
+        }
+
         public async Task RunSafe(Task task, bool ShowLoading = true, string loadinMessage = null)
         {
             try
@@ -55,7 +66,7 @@ namespace Base.ViewModel.Base
                 IsBusy = false;
                 UserDialogs.Instance.HideLoading();
                 Debug.WriteLine(e.ToString());
-                await Dialog.AlertAsync("Check your internet connection", "Error", "Ok"); 
+                await Dialog.AlertAsync("Check your internet connection", "Error", "Ok");
             }
             finally
             {

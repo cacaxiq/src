@@ -3,6 +3,7 @@ using Acr.UserDialogs;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Base.Constants;
 using Base.Mobile.CrossPresentation;
 using Xamarin.Forms;
 
@@ -17,9 +18,17 @@ namespace Base.Mobile.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
-            UserDialogs.Init(this);
+
+            InitializePlugins();
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+        }
+
+        private void InitializePlugins()
+        {
+            UserDialogs.Init(this);
+            global::Android.Gms.Ads.MobileAds.Initialize(ApplicationContext, AppConstants.AdmobKeyAndroid);
         }
     }
 }

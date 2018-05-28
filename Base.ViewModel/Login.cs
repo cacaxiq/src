@@ -5,7 +5,6 @@ using ReactiveUI;
 using Splat;
 using System;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 
 namespace Base.ViewModel
 {
@@ -63,7 +62,7 @@ namespace Base.ViewModel
                   var accessDTO = new Ref<AccessDTO>();
                   await RunSafe(ExecuteApi(LoginApi.GetToken(new UserInfoDTO { AccessKey = Password, UserId = Username }), accessDTO));
                   if (accessDTO.Value.Authenticated)
-                      HostScreen.Router.Navigate.Execute(new Intention()).Subscribe();
+                      HostScreen.Router.Navigate.Execute(new IntentionsList()).Subscribe();
               }, canExecuteLogin);
 
 

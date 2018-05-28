@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Base.Constants\Base.Constants.csproj" />
     <ProjectReference Include="..\Base.Shared.Extension\Base.Shared.Extension.csproj" />
   </ItemGroup>
 

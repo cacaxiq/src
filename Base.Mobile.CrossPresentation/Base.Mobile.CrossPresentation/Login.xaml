@@ -14,8 +14,9 @@
                 Margin="0,10,0,0"
                 FontAttributes="Bold"
                 FontSize="Large"
+                FontFamily="{StaticResource IconFont}"
                 HorizontalOptions="Center"
-                Text="Xamarin with ReactiveUI!"
+                Text="Xamarin with ReactiveUI! &#xf041;"
                 TextColor="#8e24aa" />
             <Label
                 FontAttributes="Bold"

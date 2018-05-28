@@ -68,6 +68,9 @@
     <PackageReference Include="Xamarin.Essentials">
       <Version>0.6.0-preview</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Firebase.Ads">
+      <Version>60.1142.1</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2" />
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="27.0.2" />
@@ -76,14 +79,20 @@
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="27.0.2" />
     <PackageReference Include="Xamarin.Android.Support.Compat" Version="27.0.2" />
     <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="27.0.2" />
+    <PackageReference Include="Xamarin.Forms.InputKit">
+      <Version>1.0.9</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Renders\AdMobViewRenderer.cs" />
+    <Compile Include="Renders\AwesomeLabelRenderer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\Hello-Angel.ttf" />
+    <AndroidAsset Include="Assets\fontawesome.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
@@ -104,6 +113,10 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Base.Constants\Base.Constants.csproj">
+      <Project>{C8234954-668E-4A64-A632-94A566A346F7}</Project>
+      <Name>Base.Constants</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Base.Mobile.CrossPresentation\Base.Mobile.CrossPresentation.csproj">
       <Project>{b6ea5026-6c1e-4ed3-9591-87879254eb6f}</Project>
       <Name>Base.Mobile.CrossPresentation</Name>

@@ -1,14 +1,10 @@
-﻿using Base.ViewModel.Model.Base;
-using Base.ViewModel.Model.Login;
+﻿using Base.ViewModel.Model.Login;
 using Base.ViewModel.ServiceApi.InteraceRefit;
 using Base.ViewModel.ServiceApi.InterfaceApi;
 using Base.ViewModel.ServiceApi.Service;
 using Fusillade;
-using Newtonsoft.Json;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace Base.ViewModel.ServiceApi
 {

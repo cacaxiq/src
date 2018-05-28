@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace Base.ViewModel
 {
-    public class Intention : ViewModelBase
+    public class IntentionsList : ViewModelBase
     {
         private string _searchQuery;
         public string SearchQuery
@@ -20,7 +20,6 @@ namespace Base.ViewModel
         }
 
         //List with search results once user start typing
-
         private ObservableCollection<Car> _cars;
         public ObservableCollection<Car> Cars
         {
@@ -30,8 +29,8 @@ namespace Base.ViewModel
                 this.RaiseAndSetIfChanged(ref _cars, value);
             }
         }
-        //List with initial items retrieved from web service. This is mocked by CreateList() method.
 
+        //List with initial items retrieved from web service. This is mocked by CreateList() method.
         ObservableCollection<Car> _carsSourceList;
         private ObservableCollection<Car> CarsSourceList
         {
@@ -39,13 +38,13 @@ namespace Base.ViewModel
             set { this.RaiseAndSetIfChanged(ref _carsSourceList, value); }
         }
 
-
-        public Intention()
+        public IntentionsList()
         {
             UrlPathSegment = "Lista Carros";
             HostScreen = Locator.Current.GetService<IScreen>();
             CreateList();
             SetupReactiveObservables();
+            SetIdAdMob();
         }
 
         protected void SetupReactiveObservables()

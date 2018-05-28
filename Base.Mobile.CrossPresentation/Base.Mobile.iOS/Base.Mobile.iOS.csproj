@@ -90,10 +90,14 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Renders\AdMobViewRenderer.cs" />
     <None Include="Entitlements.plist" />
-    <None Include="Info.plist" />
+    <None Include="Info.plist">
+      <SubType>Designer</SubType>
+    </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <BundleResource Include="Resources\Fonts\Hello-Angel.ttf" />
+    <BundleResource Include="Resources\Hello-Angel.ttf" />
+    <BundleResource Include="Resources\fontawesome.ttf" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h%402x.png" />
@@ -141,13 +145,26 @@
     <PackageReference Include="Xamarin.Essentials">
       <Version>0.6.0-preview</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Firebase.iOS.AdMob">
+      <Version>7.27.0.3</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
+    <PackageReference Include="Xamarin.Forms.InputKit">
+      <Version>1.0.9</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Base.Constants\Base.Constants.csproj">
+      <Project>{C8234954-668E-4A64-A632-94A566A346F7}</Project>
+      <Name>Base.Constants</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Base.Mobile.CrossPresentation\Base.Mobile.CrossPresentation.csproj">
       <Project>{b6ea5026-6c1e-4ed3-9591-87879254eb6f}</Project>
       <Name>Base.Mobile.CrossPresentation</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\backScreen.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

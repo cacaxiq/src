@@ -1,19 +1,17 @@
 ﻿using Base.Mobile.CrossPresentation.Base;
 using ReactiveUI;
-using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Base.Mobile.CrossPresentation
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class IntentionListView : ContentPageBase<ViewModel.Intention>
+    public partial class IntentionsList : ContentPageBase<ViewModel.IntentionsList>
     {
-        public IntentionListView()
+        public IntentionsList()
         {
             InitializeComponent();
-        }
+                    }
         protected override void OnAppearing()
         {
             base.OnAppearing();
