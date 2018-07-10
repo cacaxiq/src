@@ -35,6 +35,11 @@ namespace Base.ViewModel.ServiceApi
             return CallApi(apiService.GetApi(Priority.UserInitiated).GetByProspect(prospectId, token));
         }
 
+        public Task<HttpResponseMessage> GetByUserEmail(string userEmail)
+        {
+            return CallApi(apiService.GetApi(Priority.UserInitiated).GetByUserEmail(userEmail, token));
+        }
+
         public Task<HttpResponseMessage> Update(IntentionDTO _intention)
         {
             return CallApi(apiService.GetApi(Priority.UserInitiated).Update(_intention, token));

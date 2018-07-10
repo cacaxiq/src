@@ -33,6 +33,12 @@ namespace Base.WebApi.Controllers
             return Response(intentionAppService.GetAll());
         }
 
+        [HttpGet("{userEmail}")]
+        public IActionResult Get(string userEmail)
+        {
+            return Response(intentionAppService.GetAllByUserEmail(userEmail));
+        }
+
         [HttpGet("{prospectId}")]
         public IActionResult Get(Guid prospectId)
         {

@@ -10,6 +10,7 @@ namespace Base.ViewModel.ServiceApi.InterfaceApi
         Task<HttpResponseMessage> Update(IntentionDTO userInfo);
         Task<HttpResponseMessage> Create(IntentionDTO userInfo);
         Task<HttpResponseMessage> GetByProspect(Guid prospectId);
+        Task<HttpResponseMessage> GetByUserEmail(string userEmail);
         Task<HttpResponseMessage> Delete(Guid id);
     }
 }

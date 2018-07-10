@@ -13,5 +13,10 @@ namespace Base.ExternalData.Repository
         {
             return DbSet.Any(c => c.Email.Address == email);
         }
+
+        public Prospect GetByEmail(string email)
+        {
+            return DbSet.Single(c => c.Email.Address == email);
+        }
     }
 }

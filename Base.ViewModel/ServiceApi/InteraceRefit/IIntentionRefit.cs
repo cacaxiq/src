@@ -12,6 +12,9 @@ namespace Base.ViewModel.ServiceApi.InteraceRefit
         [Get("/api/Intentions/{prospectId}")]
         Task<HttpResponseMessage> GetByProspect(Guid prospectId, [Header("Authorization")] string token);
 
+        [Get("/api/Intentions/{userEmail}")]
+        Task<HttpResponseMessage> GetByUserEmail(string userEmail, [Header("Authorization")] string token);
+
         [Post("/api/Intentions")]
         Task<HttpResponseMessage> Create([Body]IntentionDTO intention, [Header("Authorization")] string token);
 

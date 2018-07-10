@@ -1,8 +1,14 @@
-﻿using Base.Shared.Extension.String;
+﻿using Base.Application.ViewModels;
+using Base.Shared.Extension.String;
 using Base.ViewModel.Base;
+using Base.ViewModel.Helpers;
+using Base.ViewModel.Model.Intention;
+using Base.ViewModel.ServiceApi;
+using Base.ViewModel.ServiceApi.InterfaceApi;
 using ReactiveUI;
 using Splat;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
@@ -12,6 +18,8 @@ namespace Base.ViewModel
 {
     public class IntentionsList : ViewModelBase
     {
+        private IIntentionApi IntentionApi;
+
         private string _searchQuery;
         public string SearchQuery
         {
@@ -20,29 +28,31 @@ namespace Base.ViewModel
         }
 
         //List with search results once user start typing
-        private ObservableCollection<Car> _cars;
-        public ObservableCollection<Car> Cars
+        private ObservableCollection<IntentionDTO> _intentions;
+        public ObservableCollection<IntentionDTO> Intentions
         {
-            get => _cars;
+            get => _intentions;
             private set
             {
-                this.RaiseAndSetIfChanged(ref _cars, value);
+                this.RaiseAndSetIfChanged(ref _intentions, value);
             }
         }
 
         //List with initial items retrieved from web service. This is mocked by CreateList() method.
-        ObservableCollection<Car> _carsSourceList;
-        private ObservableCollection<Car> CarsSourceList
+        ObservableCollection<IntentionDTO> _intentionsSourceList;
+        private ObservableCollection<IntentionDTO> IntentionsSourceList
         {
-            get { return _carsSourceList; }
-            set { this.RaiseAndSetIfChanged(ref _carsSourceList, value); }
+            get { return _intentionsSourceList; }
+            set { this.RaiseAndSetIfChanged(ref _intentionsSourceList, value); }
         }
 
-        public IntentionsList()
+        public IntentionsList(IIntentionApi intentionApi = null)
         {
-            UrlPathSegment = "Lista Carros";
+            IntentionApi = intentionApi ?? Locator.Current.GetService<IIntentionApi>();
+
+            UrlPathSegment = "Lista Intenções de compra";
             HostScreen = Locator.Current.GetService<IScreen>();
-            CreateList();
+            //CreateList();
             SetupReactiveObservables();
             SetIdAdMob();
         }
@@ -60,62 +70,27 @@ namespace Base.ViewModel
                 .Where(x => !string.IsNullOrEmpty(x))
                 .Subscribe(vm =>
                 {
-                    var filteredList = CarsSourceList.Where(brand => brand.Brand.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
-                    Device.BeginInvokeOnMainThread(() => { Cars = new ObservableCollection<Car>(filteredList); });
+                    var filteredList = IntentionsSourceList.Where(brand => brand.City.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
+                    Device.BeginInvokeOnMainThread(() => { Intentions = new ObservableCollection<IntentionDTO>(filteredList); });
                 });
 
             //When empty value is provided in SearchViewEntry field (so user cleared it), display original list without filters.
 
             this.WhenAnyValue(vm => vm.SearchQuery).Where(x => string.IsNullOrEmpty(x)).Subscribe(vm =>
             {
-                Cars = CarsSourceList;
+                Intentions = IntentionsSourceList;
             });
         }
 
         #region Mock List Items
 
-        private void CreateList()
+        private async void CreateList()
         {
-            CarsSourceList = new ObservableCollection<Car>
-            {
-               new Car
-               {
-                   Brand = "BMW",
-                   Model = "650",
-                   ThumbnailUrl = "https://image.ibb.co/chZJbv/BMW.png"
-               },
-
-               new Car
-               {
-                   Brand = "Audi",
-                   Model = "A3",
-                   ThumbnailUrl ="https://image.ibb.co/nvAMUF/AUDI.png"
-               },
-
-                 new Car
-               {
-                   Brand = "Fiat",
-                   Model = "500",
-                   ThumbnailUrl ="https://image.ibb.co/gjzbwv/FIAT.png"
-               },
-
-               new Car
-               {
-                   Brand = "Toyota",
-                   Model = "Yaris",
-                   ThumbnailUrl ="https://image.ibb.co/mt1jia/TOYOTA.png"
-               },
-
-              new Car
-               {
-                   Brand = "Pagani",
-                   Model = "Zonda",
-                   ThumbnailUrl ="https://image.ibb.co/nvS1UF/PAGANI.png"
-               }
-            };
-            Cars = CarsSourceList;
-
-            #endregion
+            var result = new Ref<List<IntentionDTO>>();
+            var user = SecurityData.GetUser();
+            await RunSafe(ExecuteApi(IntentionApi.GetByUserEmail(user.User.Address), result));
+            Intentions = IntentionsSourceList = new ObservableCollection<IntentionDTO>(result.Value);
         }
+        #endregion
     }
 }

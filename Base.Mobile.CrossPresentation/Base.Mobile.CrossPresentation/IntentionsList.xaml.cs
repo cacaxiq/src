@@ -17,7 +17,7 @@ namespace Base.Mobile.CrossPresentation
             base.OnAppearing();
             this.WhenActivated(disposables =>
             {
-                this.OneWayBind(ViewModel, x => x.Cars, x => x.CarsListView.ItemsSource).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, x => x.Intentions, x => x.CarsListView.ItemsSource).DisposeWith(disposables);
                 this.Bind(ViewModel, x => x.SearchQuery, c => c.SearchViewEntry.Text).DisposeWith(disposables);
             });
         }

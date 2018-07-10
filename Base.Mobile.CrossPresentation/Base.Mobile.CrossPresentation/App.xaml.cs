@@ -4,11 +4,9 @@ using ReactiveUI;
 using ReactiveUI.XamForms;
 using Splat;
 
-using Xamarin.Forms;
-
 namespace Base.Mobile.CrossPresentation
 {
-    public partial class App : Application, IScreen
+    public partial class App : Xamarin.Forms.Application, IScreen
     {
         public RoutingState Router { get; set; }
 

@@ -81,7 +81,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base.CrossMobile.IoC", "Bas
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IIII - Constant", "IIII - Constant", "{A04C844A-EBAD-4409-BCDD-D092DCF90C7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base.Constants", "Base.Constants\Base.Constants.csproj", "{C8234954-668E-4A64-A632-94A566A346F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base.Constants", "Base.Constants\Base.Constants.csproj", "{C8234954-668E-4A64-A632-94A566A346F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

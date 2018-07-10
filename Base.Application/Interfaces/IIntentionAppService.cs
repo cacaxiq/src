@@ -8,6 +8,7 @@ namespace Base.Application.Interfaces
     {
         IEnumerable<IntentionViewModel> GetAll();
         IEnumerable<IntentionViewModel> GetAllByProspect(Guid prospectId);
+        IEnumerable<IntentionViewModel> GetAllByUserEmail(string userEmail);
         IntentionViewModel GetById(Guid id);
         void Create(IntentionViewModel viewModel);
         void Update(IntentionViewModel viewModel);

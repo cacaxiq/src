@@ -16,13 +16,20 @@ namespace Base.Application.Services
     {
         private readonly IMapper _mapper;
         private readonly IIntentionRepository _intentionRepository;
+        private readonly IProspectRepository _prospectRepository;
         private readonly IMediatorHandler _bus;
         private readonly IConfigurationProvider _mapperConfigurationProvider;
 
-        public IntentionAppService(IMapper mapper, IIntentionRepository intentionRepository, IMediatorHandler bus, IConfigurationProvider mapperConfigurationProvider)
+        public IntentionAppService(
+            IMapper mapper,
+            IIntentionRepository intentionRepository,
+            IProspectRepository prospectRepository,
+            IMediatorHandler bus,
+            IConfigurationProvider mapperConfigurationProvider)
         {
             _mapper = mapper;
             _intentionRepository = intentionRepository;
+            _prospectRepository = prospectRepository;
             _bus = bus;
             _mapperConfigurationProvider = mapperConfigurationProvider;
         }
@@ -58,6 +65,12 @@ namespace Base.Application.Services
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+
+        public IEnumerable<IntentionViewModel> GetAllByUserEmail(string userEmail)
+        {
+            var prospect = _prospectRepository.GetByEmail(userEmail);
+            return _intentionRepository.FindAll(x => x.ProspectId == prospect.Id).ProjectTo<IntentionViewModel>(_mapperConfigurationProvider);
         }
 
         public IEnumerable<IntentionViewModel> GetAllByProspect(Guid prospectId)

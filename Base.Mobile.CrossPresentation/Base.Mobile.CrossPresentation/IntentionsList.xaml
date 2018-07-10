@@ -21,10 +21,7 @@
                 CachingStrategy="RecycleElement">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ImageCell
-                            Detail="{Binding Model}"
-                            ImageSource="{Binding ThumbnailUrl}"
-                            Text="{Binding Brand}" />
+                        <ViewCell />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

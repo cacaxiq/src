@@ -8,7 +8,7 @@ namespace Base.ViewModel.ServiceApi.Service
 {
     public class ApiService<T> : IApiService<T>
     {
-        Func<HttpMessageHandler, T> createClient;
+        readonly Func<HttpMessageHandler, T> createClient;
         public ApiService(string apiBaseAddress)
         {
             createClient = messageHandler =>

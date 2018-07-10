@@ -9,12 +9,13 @@
     <PackageReference Include="fusillade" Version="1.0.0" />
     <PackageReference Include="modernhttpclient" Version="2.4.2" />
     <PackageReference Include="Polly" Version="6.0.1" />
-    <PackageReference Include="ReactiveUI.XamForms" Version="8.2.1" />
-    <PackageReference Include="Refit" Version="4.4.17" />
+    <PackageReference Include="ReactiveUI.XamForms" Version="8.3.1" />
+    <PackageReference Include="Refit" Version="4.6.16" />
     <PackageReference Include="Xamarin.Essentials" Version="0.6.0-preview" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Base.Application\Base.Application.csproj" />
     <ProjectReference Include="..\Base.Constants\Base.Constants.csproj" />
     <ProjectReference Include="..\Base.Shared.Extension\Base.Shared.Extension.csproj" />
   </ItemGroup>

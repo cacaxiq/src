@@ -1,4 +1,5 @@
 ﻿using Base.ViewModel.Base;
+using Base.ViewModel.Helpers;
 using Base.ViewModel.Model.Login;
 using Base.ViewModel.ServiceApi.InterfaceApi;
 using ReactiveUI;
@@ -62,7 +63,10 @@ namespace Base.ViewModel
                   var accessDTO = new Ref<AccessDTO>();
                   await RunSafe(ExecuteApi(LoginApi.GetToken(new UserInfoDTO { AccessKey = Password, UserId = Username }), accessDTO));
                   if (accessDTO.Value.Authenticated)
+                  {
+                      await SecurityData.SaveUser(accessDTO.Value);
                       HostScreen.Router.Navigate.Execute(new IntentionsList()).Subscribe();
+                  }
               }, canExecuteLogin);
 
 
